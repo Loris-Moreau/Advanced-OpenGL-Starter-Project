@@ -149,9 +149,6 @@ int main(int argc, char* argv[])
 				break;
 			}
 		}
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
-		SDL_GL_SwapWindow(Window); // Swapbuffer
-
 		//Shader to use next
 		glUseProgram(shaderProgram);
 
@@ -161,6 +158,9 @@ int main(int argc, char* argv[])
 		//OMG WE FINALLY DRAW ! We use the GL_TRIANGLES primitive type
 		//We draw from vertex 0 and we will be drawing 3 vertices
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
+		SDL_GL_SwapWindow(Window); // Swapbuffer
 	}
 	// Quit
 	SDL_DestroyWindow(Window);
