@@ -24,7 +24,7 @@ int main(int argc = 0, char** argv = nullptr) {
     ///////////SETTING UP SDL/////////////
     //Create a simple window
     int width = 640;
-    int height = 480;
+    int height = 640;
     unsigned int center = SDL_WINDOWPOS_CENTERED;
     SDL_Window* Window = SDL_CreateWindow("My window", center, center, width, height, SDL_WINDOW_OPENGL);
     //SDL_WINDOW_OPENGL is a u32 flag !
