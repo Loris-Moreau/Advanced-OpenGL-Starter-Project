@@ -64,7 +64,7 @@ int main(int argc = 0, char** argv = nullptr) {
     {
         // positions             // colors
              0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-            -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+             -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
              0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
     };
 
@@ -91,12 +91,6 @@ int main(int argc = 0, char** argv = nullptr) {
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
-    // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // Color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
 
     //now that we have a vertex shader, let’s put the code text inside
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -137,8 +131,13 @@ int main(int argc = 0, char** argv = nullptr) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     // 3. then set our vertex attributes pointers
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+    // Color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
 
     // Game loop
