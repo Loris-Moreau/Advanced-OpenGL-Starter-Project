@@ -60,11 +60,14 @@ int main(int argc = 0, char** argv = nullptr) {
 
     //Describe the shape by its vertices
 
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
+    float vertices[] =
+    {
+        // positions             // colors
+             0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+            -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+             0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
     };
+
 
     //Create an ID to be given at object generation
     unsigned int vbo = 0;
@@ -80,14 +83,20 @@ int main(int argc = 0, char** argv = nullptr) {
     //Finally send the vertices array in the array buffer (linked to vbo)
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    string vs = LoadShader("vertex.shader");
+    string vs = LoadShader("simpleVertex.shader");
     const char* vertexShaderSource = vs.c_str();
-    string fs = LoadShader("fragment.shader");
+    string fs = LoadShader("simpleFragment.shader");
     const char* fragmentShaderSource = fs.c_str();
 
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // Color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
 
     //now that we have a vertex shader, let’s put the code text inside
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -131,6 +140,7 @@ int main(int argc = 0, char** argv = nullptr) {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+
     // Game loop
     bool isRunning = true;
     while (isRunning) {
@@ -147,6 +157,13 @@ int main(int argc = 0, char** argv = nullptr) {
             }
         }
         // Update
+
+        // Get the time in seconds 
+        float timeValue = (float)SDL_GetTicks() / 1000;
+        float redColor = (sin(timeValue) / 2.0f) + 0.5f;
+        int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+        glUseProgram(shaderProgram);
+        glUniform4f(vertexColorLocation, redColor, 1.0f, 0.0f, 1.0f);
 
 
         // Draw
@@ -168,7 +185,8 @@ int main(int argc = 0, char** argv = nullptr) {
 }
 
 
-string LoadShader(string fileName) {
+string LoadShader(string fileName) 
+{
     ifstream myFile;
     myFile.open(fileName);
     if (myFile.fail()) {
