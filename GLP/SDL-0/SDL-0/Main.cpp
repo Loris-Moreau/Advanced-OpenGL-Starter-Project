@@ -50,26 +50,9 @@ int main(int argc, char* argv[])
 	// Create an ID to be given at object generation
 		unsigned int vbo;
 
-
 	//Pass how many buffers should be created and the reference of the ID to get the value set
 	glGenBuffers(1, &vbo);
 
-	#version 330 core
-		in vec3 pos;
-
-	void main()
-	{
-		gl_Position = vec4(pos, 1.0);
-	}
-
-
-	#version 330 core
-		out vec4 FragColor;
-
-	void main()
-	{
-		FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
-	}
 
 	const char* vertexShaderSource = "#version 330 core\n"
 		"in vec3 pos;\n"
@@ -135,6 +118,11 @@ int main(int argc, char* argv[])
 	//Enable my vertex attrib array number 0 (we only have one attribute of position)
 	glEnableVertexAttribArray(0);
 
+	//Use depth management
+	glEnable(GL_DEPTH_TEST);
+
+	//0 is our origin, the higher the z, the farther the object
+	glDepthFunc(GL_LESS);
 
 	bool isRunning = true;
 	while (isRunning) {
@@ -149,6 +137,8 @@ int main(int argc, char* argv[])
 				break;
 			}
 		}
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
+
 		//Shader to use next
 		glUseProgram(shaderProgram);
 
@@ -159,7 +149,6 @@ int main(int argc, char* argv[])
 		//We draw from vertex 0 and we will be drawing 3 vertices
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
 		SDL_GL_SwapWindow(Window); // Swapbuffer
 	}
 	// Quit
