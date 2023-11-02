@@ -58,16 +58,32 @@ int main(int argc = 0, char** argv = nullptr) {
 
     // Load
 
+    //Horizontal & Vertical offset
+    float HorizontalOffset = -0.4f; // + = left, - = right
+    float VerticalOffset = 0.4f; // + = Up, - = Down
+
     //Describe the shape by its vertices
 
+    /*
+    ///Unfliped Triangle
+   float vertices[] = 
+   {
+    // positions             // colors
+     0.5f + HorizontalOffset, -0.5f + VerticalOffset, 0.0f,  1.0f, 0.0f, 0.0f,   
+    -0.5f + HorizontalOffset, -0.5f + VerticalOffset, 0.0f,  0.0f, 1.0f, 0.0f,   
+     0.0f + HorizontalOffset,  0.5f + VerticalOffset, 0.0f,  0.0f, 0.0f, 1.0f    
+    };
+    */
+
+    ///Fliped Triangle
     float vertices[] =
     {
-        // positions             // colors
-             -1.0f, 0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-             0.0f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-             -0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f
+        //positions + Horizontal Offset                              // colors
+             -0.5f + HorizontalOffset, 0.5f + VerticalOffset, 0.0f,  1.0f, 0.0f, 0.0f,
+             0.5f + HorizontalOffset, 0.5f + VerticalOffset, 0.0f,  0.0f, 1.0f, 0.0f,
+             0.0f + HorizontalOffset, -0.5f + VerticalOffset, 0.0f,  0.0f, 0.0f, 1.0f
     };
-
+    
 
     //Create an ID to be given at object generation
     unsigned int vbo = 0;
@@ -159,7 +175,8 @@ int main(int argc = 0, char** argv = nullptr) {
 
         // Get the time in seconds 
         float timeValue = (float)SDL_GetTicks() / 1000;
-        float redColor = (sin(timeValue) / 2.0f) + 0.5f;
+        //float redColor = (sin(timeValue) / 2.0f) + 0.5f;
+        float redColor = glGetUniformLocation(shaderProgram, "gl_Position");
         int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
         glUseProgram(shaderProgram);
         glUniform4f(vertexColorLocation, redColor, 1.0f, 0.0f, 1.0f);
