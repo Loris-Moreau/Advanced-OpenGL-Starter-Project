@@ -165,7 +165,19 @@ int main(int argc = 0, char** argv = nullptr) {
     bool isRunning = true;
     while (isRunning) 
     {
+        // Get the time in seconds 
+        float timeValue = (float)SDL_GetTicks() / 1000;
+
         // Inputs
+        float xPos = (sin(timeValue));
+        float yPos = (sin(timeValue));
+
+        int vertexHOffsetLoc = glGetUniformLocation(shaderProgram, "HOffset");
+        int vertexVOffsetLoc = glGetUniformLocation(shaderProgram, "VOffset");
+        glUseProgram(shaderProgram);
+        glUniform1f(vertexHOffsetLoc, xPos);
+        glUniform1f(vertexVOffsetLoc, yPos);
+
         SDL_Event event;
         while (SDL_PollEvent(&event)) 
         {
@@ -182,8 +194,7 @@ int main(int argc = 0, char** argv = nullptr) {
 
         // Update
         /*
-        // Get the time in seconds 
-        float timeValue = (float)SDL_GetTicks() / 1000;
+        
         //float redColor = (sin(timeValue) / 2.0f) + 0.5f;
         float redColor = glGetUniformLocation(shaderProgram, "gl_Position");
         int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
