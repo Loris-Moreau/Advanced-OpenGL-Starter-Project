@@ -74,23 +74,30 @@ int main(int argc = 0, char** argv = nullptr) {
     };
     */
     
-    ///Fliped Triangle
+    /*///Fliped Triangle
     float vertices[] =
     {
         //positions + Offsets                                        // colors
              -0.5f + HorizontalOffset,  0.5f + VerticalOffset, 0.0f,  1.0f, 0.0f, 0.0f,
               0.5f + HorizontalOffset,  0.5f + VerticalOffset, 0.0f,  0.0f, 1.0f, 0.0f,
               0.0f + HorizontalOffset, -0.5f + VerticalOffset, 0.0f,  0.0f, 0.0f, 1.0f
-    };
+    };*/
     
 
-    /*float vertices[] =
+    float vertices[] =
     {
-        // positions         // colors
-        -0.5f, 0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-        0.5f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-        0.0f,  -0.5f, 0.0f,  0.0f, 0.0f, 1.0f
-    };*/
+        -0.55, -0.5, 0.6,  1.0f, 0.0f, 0.0f,//A
+         0.7, 0.15, 0.6,  0.0f,  1.0f, 0.0f,//B
+        -0.65, 0.7, 0.6,  0.0f, 0.0f, 1.0f,//C
+
+        0.075, -0.175, 0.4,  1.0f, 0.0f, 0.0f,//E
+        0.025, 0.425, 0.4,  0.0f, 1.0f, 0.0f,//I
+        -0.6,  0.1,   0.4,  0.0f, 0.0f, 1.0f,//J
+
+        -0.6, 0.042, 0.5,  1.0f, 0.0f, 0.0f,//K
+        -0.14, -0.3, 0.5,  0.0f, 1.0f, 0.0f,//O
+        -0.15, 0.5, 0.5 ,  0.0f, 0.0f, 1.0f//L
+    };
 
     
 
@@ -168,7 +175,7 @@ int main(int argc = 0, char** argv = nullptr) {
         // Get the time in seconds 
         float timeValue = (float)SDL_GetTicks() / 1000;
 
-        // Inputs
+        /*// Inputs
         float xPos = (sin(timeValue));
         float yPos = (sin(timeValue));
 
@@ -176,7 +183,7 @@ int main(int argc = 0, char** argv = nullptr) {
         int vertexVOffsetLoc = glGetUniformLocation(shaderProgram, "VOffset");
         glUseProgram(shaderProgram);
         glUniform1f(vertexHOffsetLoc, xPos);
-        glUniform1f(vertexVOffsetLoc, yPos);
+        glUniform1f(vertexVOffsetLoc, yPos);*/
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) 
@@ -208,7 +215,7 @@ int main(int argc = 0, char** argv = nullptr) {
         // Draw here
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 9);
         SDL_GL_SwapWindow(Window); // Swapbuffer
     }
 
