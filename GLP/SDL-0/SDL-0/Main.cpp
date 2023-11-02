@@ -175,7 +175,7 @@ int main(int argc = 0, char** argv = nullptr) {
         // Get the time in seconds 
         float timeValue = (float)SDL_GetTicks() / 1000;
 
-        /*// Inputs
+        // Inputs
         float xPos = (sin(timeValue));
         float yPos = (sin(timeValue));
 
@@ -183,7 +183,7 @@ int main(int argc = 0, char** argv = nullptr) {
         int vertexVOffsetLoc = glGetUniformLocation(shaderProgram, "VOffset");
         glUseProgram(shaderProgram);
         glUniform1f(vertexHOffsetLoc, xPos);
-        glUniform1f(vertexVOffsetLoc, yPos);*/
+        glUniform1f(vertexVOffsetLoc, yPos);
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) 
