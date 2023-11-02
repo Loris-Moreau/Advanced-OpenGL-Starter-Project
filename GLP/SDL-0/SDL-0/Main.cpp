@@ -4,7 +4,6 @@
 #include <fstream>
 #include <string>
 
-
 using namespace std;
 
 string LoadShader(string fileName);
@@ -12,7 +11,7 @@ string LoadShader(string fileName);
 int main(int argc = 0, char** argv = nullptr) {
 
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
-        cout << "SDL initialized successfully \n";
+        cout << "SDL initialized successfully\n";
     }
 
     int flags = SDL_WINDOW_OPENGL;
@@ -22,19 +21,19 @@ int main(int argc = 0, char** argv = nullptr) {
         return 1;
     }
     ///////////SETTING UP SDL/////////////
+    
     //Create a simple window
-    int width = 640;
-    int height = 640;
+    int width = 1280;
+    int height = 780;
     unsigned int center = SDL_WINDOWPOS_CENTERED;
-    SDL_Window* Window = SDL_CreateWindow("My window", center, center, width, height, SDL_WINDOW_OPENGL);
+    SDL_Window* Window = SDL_CreateWindow("Triangle of Doom", center, center, width, height, SDL_WINDOW_OPENGL);
     //SDL_WINDOW_OPENGL is a u32 flag !
-
 
     ////Create an OpenGL compatible context to let glew draw on it
     SDL_GLContext Context = SDL_GL_CreateContext(Window);
 
-
     /////////SETTING UP OPENGL WITH GLEW///
+    
     //Initialize glew
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) {
@@ -45,8 +44,8 @@ int main(int argc = 0, char** argv = nullptr) {
     // Get info
     const GLubyte* renderer = glGetString(GL_RENDERER);
     const GLubyte* version = glGetString(GL_VERSION);
-    cout << "Renderer: " << renderer << endl;
-    cout << "OpenGL version supported: " << version << endl;
+    cout << "Renderer : " << renderer << endl;
+    cout << "OpenGL version supported : " << version << endl;
 
     // Tell GL to only draw onto a pixel if the shape is closer to the viewer
     glEnable(GL_DEPTH_TEST); // enable depth-testing
@@ -59,7 +58,7 @@ int main(int argc = 0, char** argv = nullptr) {
     // Load
 
     //Horizontal & Vertical offset
-    float HorizontalOffset = -0.4f; // + = left, - = right
+    float HorizontalOffset = -0.4f; // + = right, - = left
     float VerticalOffset = 0.4f; // + = Up, - = Down
 
     //Describe the shape by its vertices
@@ -74,24 +73,15 @@ int main(int argc = 0, char** argv = nullptr) {
     };
     */
 
-    /*
     ///Fliped Triangle
     float vertices[] =
     {
-        //positions + Horizontal Offset                              // colors
+        //positions + Offsets                                        // colors
              -0.5f + HorizontalOffset, 0.5f + VerticalOffset, 0.0f,  1.0f, 0.0f, 0.0f,
               0.5f + HorizontalOffset, 0.5f + VerticalOffset, 0.0f,  0.0f, 1.0f, 0.0f,
               0.0f + HorizontalOffset, -0.5f + VerticalOffset, 0.0f,  0.0f, 0.0f, 1.0f
     };
-    */
     
-    float vertices[] = {
-        // positions             // colors
-        0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-        0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
-    };
-
 
     //Create an ID to be given at object generation
     unsigned int vbo = 0;
@@ -99,7 +89,6 @@ int main(int argc = 0, char** argv = nullptr) {
 
     //Pass how many buffers should be created and the reference of the ID to get the value set
     glGenBuffers(1, &vbo);
-
 
     //Binds the buffer linked to this ID to the vertex array buffer to be rendered. Put 0 instead of vbo to reset the value.
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -115,14 +104,11 @@ int main(int argc = 0, char** argv = nullptr) {
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
-
     //now that we have a vertex shader, let’s put the code text inside
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 
-
-    //aaaaand… Compile !
+    //and… Compile !
     glCompileShader(vertexShader);
-
 
     //Do the same with the fragment shader !
     unsigned int fragmentShader;
@@ -132,8 +118,6 @@ int main(int argc = 0, char** argv = nullptr) {
 
     unsigned int shaderProgram;
     shaderProgram = glCreateProgram();
-
-
 
     //now attach shaders to use to the program
     glAttachShader(shaderProgram, vertexShader);
@@ -148,14 +132,13 @@ int main(int argc = 0, char** argv = nullptr) {
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
 
-    // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
+    // ... Initialization code (done once (unless your object frequently changes)) ...
     // 1. bind Vertex Array Object
     glBindVertexArray(VAO);
     // 2. copy our vertices array in a buffer for OpenGL to use
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     // 3. then set our vertex attributes pointers
-    
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -166,11 +149,14 @@ int main(int argc = 0, char** argv = nullptr) {
 
     // Game loop
     bool isRunning = true;
-    while (isRunning) {
+    while (isRunning) 
+    {
         // Inputs
         SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
+        while (SDL_PollEvent(&event)) 
+        {
+            switch (event.type) 
+            {
             case SDL_QUIT:
                 isRunning = false;
                 break;
@@ -179,8 +165,8 @@ int main(int argc = 0, char** argv = nullptr) {
                 break;
             }
         }
-        // Update
 
+        // Update
         /*
         // Get the time in seconds 
         float timeValue = (float)SDL_GetTicks() / 1000;
@@ -201,7 +187,6 @@ int main(int argc = 0, char** argv = nullptr) {
         SDL_GL_SwapWindow(Window); // Swapbuffer
     }
 
-
     // Quit
     SDL_DestroyWindow(Window);
     SDL_GL_DeleteContext(Context);
@@ -214,7 +199,8 @@ string LoadShader(string fileName)
 {
     ifstream myFile;
     myFile.open(fileName);
-    if (myFile.fail()) {
+    if (myFile.fail()) 
+    {
         cerr << "Error - failed to open " << fileName << endl;
     }
     string fileText = "";
