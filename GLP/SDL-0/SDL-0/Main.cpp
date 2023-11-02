@@ -1,5 +1,6 @@
 ﻿#include <SDL.h>
 #include <glew.h>
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -58,10 +59,8 @@ int main(int argc = 0, char** argv = nullptr) {
     // Load
 
     //Horizontal & Vertical offset
-    float HorizontalOffset = -0.4f; // + = right, - = left
-    float VerticalOffset = 0.4f; // + = Up, - = Down
-
-    
+    float HorizontalOffset = 0.45f; // + = right, - = left
+    float VerticalOffset = 0.1f; // + = Up, - = Down
 
     //Describe the shape by its vertices
     /*
@@ -74,24 +73,24 @@ int main(int argc = 0, char** argv = nullptr) {
      0.0f + HorizontalOffset,  0.5f + VerticalOffset, 0.0f,  0.0f, 0.0f, 1.0f    
     };
     */
-    /*
+    
     ///Fliped Triangle
     float vertices[] =
     {
         //positions + Offsets                                        // colors
-             -0.5f + HorizontalOffset, 0.5f + VerticalOffset, 0.0f,  1.0f, 0.0f, 0.0f,
-              0.5f + HorizontalOffset, 0.5f + VerticalOffset, 0.0f,  0.0f, 1.0f, 0.0f,
+             -0.5f + HorizontalOffset,  0.5f + VerticalOffset, 0.0f,  1.0f, 0.0f, 0.0f,
+              0.5f + HorizontalOffset,  0.5f + VerticalOffset, 0.0f,  0.0f, 1.0f, 0.0f,
               0.0f + HorizontalOffset, -0.5f + VerticalOffset, 0.0f,  0.0f, 0.0f, 1.0f
     };
-    */
+    
 
-    float vertices[] = 
+    /*float vertices[] =
     {
         // positions         // colors
         -0.5f, 0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
         0.5f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
         0.0f,  -0.5f, 0.0f,  0.0f, 0.0f, 1.0f
-    };
+    };*/
 
     
 
