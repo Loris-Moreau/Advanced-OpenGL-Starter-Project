@@ -24,7 +24,7 @@ int main(int argc = 0, char** argv = nullptr) {
     
     //Create a simple window
     int width = 1280;
-    int height = 780;
+    int height = 720;
     unsigned int center = SDL_WINDOWPOS_CENTERED;
     SDL_Window* Window = SDL_CreateWindow("Triangle of Doom", center, center, width, height, SDL_WINDOW_OPENGL);
     //SDL_WINDOW_OPENGL is a u32 flag !
@@ -61,6 +61,8 @@ int main(int argc = 0, char** argv = nullptr) {
     float HorizontalOffset = -0.4f; // + = right, - = left
     float VerticalOffset = 0.4f; // + = Up, - = Down
 
+    
+
     //Describe the shape by its vertices
     /*
     ///Unfliped Triangle
@@ -72,7 +74,7 @@ int main(int argc = 0, char** argv = nullptr) {
      0.0f + HorizontalOffset,  0.5f + VerticalOffset, 0.0f,  0.0f, 0.0f, 1.0f    
     };
     */
-
+    /*
     ///Fliped Triangle
     float vertices[] =
     {
@@ -81,6 +83,16 @@ int main(int argc = 0, char** argv = nullptr) {
               0.5f + HorizontalOffset, 0.5f + VerticalOffset, 0.0f,  0.0f, 1.0f, 0.0f,
               0.0f + HorizontalOffset, -0.5f + VerticalOffset, 0.0f,  0.0f, 0.0f, 1.0f
     };
+    */
+
+    float vertices[] = 
+    {
+        // positions         // colors
+        -0.5f, 0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+        0.5f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+        0.0f,  -0.5f, 0.0f,  0.0f, 0.0f, 1.0f
+    };
+
     
 
     //Create an ID to be given at object generation
@@ -96,10 +108,12 @@ int main(int argc = 0, char** argv = nullptr) {
     //Finally send the vertices array in the array buffer (linked to vbo)
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+
     string vs = LoadShader("simpleVertex.shader");
     const char* vertexShaderSource = vs.c_str();
     string fs = LoadShader("simpleFragment.shader");
     const char* fragmentShaderSource = fs.c_str();
+
 
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -109,6 +123,7 @@ int main(int argc = 0, char** argv = nullptr) {
 
     //and… Compile !
     glCompileShader(vertexShader);
+
 
     //Do the same with the fragment shader !
     unsigned int fragmentShader;
