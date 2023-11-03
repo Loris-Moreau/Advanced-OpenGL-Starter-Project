@@ -221,16 +221,17 @@ int main(int argc = 0, char** argv = nullptr)
     bool isRunning = true;
     while (isRunning) 
     {
-        /*if (SDL_KEYDOWN == SDL_SCANCODE_E)
+        /*if (SDL_PRESSED == SDL_SCANCODE_E)
         {
             isRunning = false;
+            return 0;
         }*/
 
         // Get the time in seconds 
         float timeValue = (float)SDL_GetTicks() / 1000;
 
-
-        /*float xPos = (sin(timeValue));
+        /*// ah
+        float xPos = (sin(timeValue));
         float yPos = (sin(timeValue));
 
         int vertexHOffsetLoc = glGetUniformLocation(shaderProgram, "HOffset");
@@ -242,11 +243,20 @@ int main(int argc = 0, char** argv = nullptr)
         SDL_Event event;
         while (SDL_PollEvent(&event)) 
         {
+            if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
+            {
+                    isRunning = false;
+            }
+
             switch (event.type) 
             {
             case SDL_QUIT:
                 isRunning = false;
                 break;
+
+            /*case SDL_KEYDOWN == SDL_SCANCODE_E:
+                isRunning = false;
+                break;*/
 
             default:
                 break;
