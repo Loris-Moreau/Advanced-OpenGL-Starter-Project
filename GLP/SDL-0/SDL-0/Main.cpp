@@ -63,17 +63,50 @@ int main(int argc = 0, char** argv = nullptr)
     /// Load
  
     //Describe the shape by its vertices
-    float vertices[] =
+    float CenterLine[] =
     {
-        -0.55, -0.5, 0.6,  1.0f, 0.0f, 0.0f,//A
-         0.7, 0.15, 0.6,  0.0f,  1.0f, 0.0f,//B
-        -0.65, 0.7, 0.6,  0.0f, 0.0f, 1.0f,//C
+        //Center Line (Rectangle)
+        -0.01f,  1.0f, 0.0f,     1.0f, 0.0f, 0.0f,//A
+        -0.01f, -1.0f, 0.0f,     0.0f, 1.0f, 0.0f,//B
+         0.01f,  1.0f, 0.0f,     0.0f, 0.0f, 1.0f,//D
+        0.01f,  -1.0f, 0.0f,     1.0f, 0.0f, 0.0f,//C
+        -0.01f, -1.0f, 0.0f,     0.0f, 1.0f, 0.0f, //B
+
+        -0.95f,  0.15f, 0.0f,  1.0f, 0.0f, 0.0f,//I
+        -0.95f, -0.15f, 0.0f,  0.0f, 1.0f, 0.0f,//L
+         -0.9f,  0.15f, 0.0f,  0.0f, 0.0f, 1.0f,//J
+         -0.9f, -0.15f, 0.0f,  1.0f, 0.0f, 0.0f,//K
+        -0.95f, -0.15f, 0.0f,  1.0f, 1.0f, 0.0f, //L
+
+        0.9f,  0.15 ,0.0,  1.0f, 0.0f, 0.0f,//M
+         0.9f, -0.15, 0.0,  0.0f, 1.0f, 0.0f,//N
+        0.95f,  0.15, 0.0,  0.0f, 0.0f, 1.0f,//P
+        0.95f, -0.15, 0.0,  1.0f, 0.0f, 0.0f,//O
+         0.9f, -0.15, 0.0,  0.0f, 1.0f, 0.0f //N
     };
 
+    /*//Left Side Rectangle
+    float LeftRect[] =
+    {
+        -0.95f,  0.15f, 0.0f,  1.0f, 0.0f, 0.0f,//I
+        -0.95f, -0.15f, 0.0f,  0.0f, 1.0f, 0.0f,//L
+         -0.9f,  0.15f, 0.0f,  0.0f, 0.0f, 1.0f,//J
+         -0.9f, -0.15f, 0.0f,  1.0f, 0.0f, 0.0f,//K
+        -0.95f, -0.15f, 0.0f,  1.0f, 1.0f, 0.0f //L
+    };*/
+
+    /*//right Side Rectangle
+    float RightRect[] =
+    { 
+         0.9f,  0.15 ,0.0,  1.0f, 0.0f, 0.0f,//M
+         0.9f, -0.15, 0.0,  0.0f, 1.0f, 0.0f,//N
+        0.95f,  0.15, 0.0,  0.0f, 0.0f, 1.0f,//P
+        0.95f, -0.15, 0.0,  1.0f, 0.0f, 0.0f,//O
+         0.9f, -0.15, 0.0,  0.0f, 1.0f, 0.0f //N
+    };*/
 
     //Create an ID to be given at object generation
     unsigned int vbo = 0;
-
 
     //Pass how many buffers should be created and the reference of the ID to get the value set
     glGenBuffers(1, &vbo);
@@ -82,15 +115,22 @@ int main(int argc = 0, char** argv = nullptr)
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     //Finally send the vertices array in the array buffer (linked to vbo)
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(CenterLine), CenterLine, GL_STATIC_DRAW);
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //Shaders Initialize (Get)
 
-    string vs = LoadShader("Vertex.shader");
+    string vs = LoadShader("BallVertex.shader");
     const char* vertexShaderSource = vs.c_str();
-    string fs = LoadShader("Fragment.shader");
+    string fs = LoadShader("BallFragment.shader");
     const char* fragmentShaderSource = fs.c_str();
 
+    string rvs = LoadShader("RectangleVertex.shader");
+    const char* RectangleVertexShaderSource = rvs.c_str();
+    string rfs = LoadShader("RectangleFragment.shader");
+    const char* RectangleFragmentShaderSource = rfs.c_str();
 
+    ///for the ball///
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
@@ -99,7 +139,6 @@ int main(int argc = 0, char** argv = nullptr)
 
     //and… Compile !
     glCompileShader(vertexShader);
-
 
     //Do the same with the fragment shader !
     unsigned int fragmentShader;
@@ -120,6 +159,37 @@ int main(int argc = 0, char** argv = nullptr)
     //now that the program is complete, we can use it 
     glUseProgram(shaderProgram);
 
+    //for the others
+    unsigned int RectangleVertexShader;
+    RectangleVertexShader = glCreateShader(GL_VERTEX_SHADER);
+
+    //now that we have a vertex shader, let’s put the code text inside
+    glShaderSource(RectangleVertexShader, 1, &RectangleVertexShaderSource, NULL);
+
+    //and… Compile !
+    glCompileShader(RectangleVertexShader);
+
+
+    //Do the same with the fragment shader !
+    unsigned int RectangleFragmentShader;
+    RectangleFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(RectangleFragmentShader, 1, &RectangleFragmentShaderSource, NULL);
+    glCompileShader(RectangleFragmentShader);
+
+    unsigned int RectangleshaderProgram;
+    RectangleshaderProgram = glCreateProgram();
+
+    //now attach shaders to use to the program
+    glAttachShader(RectangleshaderProgram, RectangleVertexShader);
+    glAttachShader(RectangleshaderProgram, RectangleFragmentShader);
+
+    //and link it 
+    glLinkProgram(RectangleshaderProgram);
+
+    //now that the program is complete, we can use it 
+    glUseProgram(RectangleshaderProgram);
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
 
@@ -128,7 +198,8 @@ int main(int argc = 0, char** argv = nullptr)
     glBindVertexArray(VAO);
     // 2. copy our vertices array in a buffer for OpenGL to use
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(CenterLine), CenterLine, GL_STATIC_DRAW);
     // 3. then set our vertex attributes pointers
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
@@ -142,23 +213,23 @@ int main(int argc = 0, char** argv = nullptr)
     bool isRunning = true;
     while (isRunning) 
     {
-        if (SDL_KEYDOWN == SDL_SCANCODE_E)
+        /*if (SDL_KEYDOWN == SDL_SCANCODE_E)
         {
             isRunning = false;
-        }
+        }*/
 
         // Get the time in seconds 
         float timeValue = (float)SDL_GetTicks() / 1000;
 
 
-        float xPos = (sin(timeValue));
+        /*float xPos = (sin(timeValue));
         float yPos = (sin(timeValue));
 
         int vertexHOffsetLoc = glGetUniformLocation(shaderProgram, "HOffset");
         int vertexVOffsetLoc = glGetUniformLocation(shaderProgram, "VOffset");
         glUseProgram(shaderProgram);
         glUniform1f(vertexHOffsetLoc, xPos);
-        glUniform1f(vertexVOffsetLoc, yPos);
+        glUniform1f(vertexVOffsetLoc, yPos);*/
 
         SDL_Event event;
         while (SDL_PollEvent(&event)) 
@@ -180,7 +251,10 @@ int main(int argc = 0, char** argv = nullptr)
         // Draw here
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 9);
+
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 5); //Center Line (Rectangle)
+        glDrawArrays(GL_TRIANGLE_FAN, 5, 5); //Center Line (Rectangle)
+        glDrawArrays(GL_TRIANGLE_FAN, 10, 5); //Center Line (Rectangle)
         SDL_GL_SwapWindow(Window); // Swapbuffer
     }
 
