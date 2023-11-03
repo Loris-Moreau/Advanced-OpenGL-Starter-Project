@@ -9,15 +9,18 @@ using namespace std;
 
 string LoadShader(string fileName);
 
-int main(int argc = 0, char** argv = nullptr) {
+int main(int argc = 0, char** argv = nullptr) 
+{
 
-    if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
+    if (SDL_Init(SDL_INIT_EVERYTHING) == 0) 
+    {
         cout << "SDL initialized successfully\n";
     }
 
     int flags = SDL_WINDOW_OPENGL;
 
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) 
+    {
         cout << "SDL failed to initialize" << endl;
         return 1;
     }
@@ -37,10 +40,10 @@ int main(int argc = 0, char** argv = nullptr) {
     
     //Initialize glew
     glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK) {
+    if (glewInit() != GLEW_OK) 
+    {
         cout << "Glew failed to initialize\n";
     }
-
 
     // Get info
     const GLubyte* renderer = glGetString(GL_RENDERER);
@@ -56,8 +59,8 @@ int main(int argc = 0, char** argv = nullptr) {
     glViewport(0, 0, width, height);
     glClearColor(0.0f, 0.0f, 0.2f, 1.0f);
 
-    // Load
 
+    /// Load
     //Horizontal & Vertical offset
     float HorizontalOffset = 0.45f; // + = right, - = left
     float VerticalOffset = 0.1f; // + = Up, - = Down
@@ -99,7 +102,6 @@ int main(int argc = 0, char** argv = nullptr) {
         -0.15, 0.5, 0.5 ,  0.0f, 0.0f, 1.0f//L
     };
 
-    
 
     //Create an ID to be given at object generation
     unsigned int vbo = 0;
