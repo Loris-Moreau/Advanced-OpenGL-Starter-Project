@@ -30,7 +30,7 @@ int main(int argc = 0, char** argv = nullptr)
     int width = 1280;
     int height = 720;
     unsigned int center = SDL_WINDOWPOS_CENTERED;
-    SDL_Window* Window = SDL_CreateWindow("Triangle of Doom", center, center, width, height, SDL_WINDOW_OPENGL);
+    SDL_Window* Window = SDL_CreateWindow("SDL Pong (yay) ///0w0///", center, center, width, height, SDL_WINDOW_OPENGL);
     //SDL_WINDOW_OPENGL is a u32 flag !
 
     ////Create an OpenGL compatible context to let glew draw on it
@@ -61,45 +61,13 @@ int main(int argc = 0, char** argv = nullptr)
 
 
     /// Load
-    //Horizontal & Vertical offset
-    float HorizontalOffset = 0.45f; // + = right, - = left
-    float VerticalOffset = 0.1f; // + = Up, - = Down
-
+ 
     //Describe the shape by its vertices
-    /*
-    ///Unfliped Triangle
-   float vertices[] = 
-   {
-    // positions             // colors
-     0.5f + HorizontalOffset, -0.5f + VerticalOffset, 0.0f,  1.0f, 0.0f, 0.0f,   
-    -0.5f + HorizontalOffset, -0.5f + VerticalOffset, 0.0f,  0.0f, 1.0f, 0.0f,   
-     0.0f + HorizontalOffset,  0.5f + VerticalOffset, 0.0f,  0.0f, 0.0f, 1.0f    
-    };
-    */
-    
-    /*///Fliped Triangle
-    float vertices[] =
-    {
-        //positions + Offsets                                        // colors
-             -0.5f + HorizontalOffset,  0.5f + VerticalOffset, 0.0f,  1.0f, 0.0f, 0.0f,
-              0.5f + HorizontalOffset,  0.5f + VerticalOffset, 0.0f,  0.0f, 1.0f, 0.0f,
-              0.0f + HorizontalOffset, -0.5f + VerticalOffset, 0.0f,  0.0f, 0.0f, 1.0f
-    };*/
-    
-
     float vertices[] =
     {
         -0.55, -0.5, 0.6,  1.0f, 0.0f, 0.0f,//A
          0.7, 0.15, 0.6,  0.0f,  1.0f, 0.0f,//B
         -0.65, 0.7, 0.6,  0.0f, 0.0f, 1.0f,//C
-
-        0.075, -0.175, 0.4,  1.0f, 0.0f, 0.0f,//E
-        0.025, 0.425, 0.4,  0.0f, 1.0f, 0.0f,//I
-        -0.6,  0.1,   0.4,  0.0f, 0.0f, 1.0f,//J
-
-        -0.6, 0.042, 0.5,  1.0f, 0.0f, 0.0f,//K
-        -0.14, -0.3, 0.5,  0.0f, 1.0f, 0.0f,//O
-        -0.15, 0.5, 0.5 ,  0.0f, 0.0f, 1.0f//L
     };
 
 
@@ -117,9 +85,9 @@ int main(int argc = 0, char** argv = nullptr)
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
-    string vs = LoadShader("simpleVertex.shader");
+    string vs = LoadShader("Vertex.shader");
     const char* vertexShaderSource = vs.c_str();
-    string fs = LoadShader("simpleFragment.shader");
+    string fs = LoadShader("Fragment.shader");
     const char* fragmentShaderSource = fs.c_str();
 
 
@@ -177,13 +145,12 @@ int main(int argc = 0, char** argv = nullptr)
         if (SDL_KEYDOWN == SDL_SCANCODE_E)
         {
             isRunning = false;
-            SDL_QUIT;
         }
 
         // Get the time in seconds 
         float timeValue = (float)SDL_GetTicks() / 1000;
 
-        // Inputs
+
         float xPos = (sin(timeValue));
         float yPos = (sin(timeValue));
 
@@ -206,15 +173,6 @@ int main(int argc = 0, char** argv = nullptr)
                 break;
             }
         }
-
-        // Update
-        /*
-        //float redColor = (sin(timeValue) / 2.0f) + 0.5f;
-        float redColor = glGetUniformLocation(shaderProgram, "gl_Position");
-        int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
-        glUseProgram(shaderProgram);
-        glUniform4f(vertexColorLocation, redColor, 1.0f, 0.0f, 1.0f);
-        */
 
         // Draw
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen

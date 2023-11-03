@@ -23,10 +23,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="simpleFragment.shader">
+    <None Include="Fragment.shader">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="simpleVertex.shader">
+    <None Include="Vertex.shader">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
