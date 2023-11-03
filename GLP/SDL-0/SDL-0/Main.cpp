@@ -57,13 +57,13 @@ int main(int argc = 0, char** argv = nullptr)
 
     // Set viewport and clear color
     glViewport(0, 0, width, height);
-    glClearColor(0.0f, 0.0f, 0.2f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 
     /// Load
  
     //Describe the shape by its vertices
-    float CenterLine[] =
+    float Vertices[] =
     {
         //Center Line (Rectangle)
         -0.01f,  1.0f, 0.0f,     1.0f, 0.0f, 0.0f,//A
@@ -72,17 +72,19 @@ int main(int argc = 0, char** argv = nullptr)
         0.01f,  -1.0f, 0.0f,     1.0f, 0.0f, 0.0f,//C
         -0.01f, -1.0f, 0.0f,     0.0f, 1.0f, 0.0f, //B
 
-        -0.95f,  0.15f, 0.0f,  1.0f, 0.0f, 0.0f,//I
-        -0.95f, -0.15f, 0.0f,  0.0f, 1.0f, 0.0f,//L
-         -0.9f,  0.15f, 0.0f,  0.0f, 0.0f, 1.0f,//J
-         -0.9f, -0.15f, 0.0f,  1.0f, 0.0f, 0.0f,//K
-        -0.95f, -0.15f, 0.0f,  1.0f, 1.0f, 0.0f, //L
+        //Left Rectangle
+        -0.95f,  0.15f, 0.1,  1.0f, 0.0f, 0.0f,//I
+        -0.95f, -0.15f, 0.1,  0.0f, 1.0f, 0.0f,//L
+         -0.9f,  0.15f, 0.1,  0.0f, 0.0f, 1.0f,//J
+         -0.9f, -0.15f, 0.1,  1.0f, 0.0f, 0.0f,//K
+        -0.95f, -0.15f, 0.1,  1.0f, 1.0f, 0.0f, //L
 
-        0.9f,  0.15 ,0.0,  1.0f, 0.0f, 0.0f,//M
-         0.9f, -0.15, 0.0,  0.0f, 1.0f, 0.0f,//N
-        0.95f,  0.15, 0.0,  0.0f, 0.0f, 1.0f,//P
-        0.95f, -0.15, 0.0,  1.0f, 0.0f, 0.0f,//O
-         0.9f, -0.15, 0.0,  0.0f, 1.0f, 0.0f //N
+        //Right Rectangle
+        0.9f,  0.15, 0.1,  1.0f, 0.0f, 0.0f,//M
+         0.9f, -0.15, 0.1,  0.0f, 1.0f, 0.0f,//N
+        0.95f,  0.15, 0.1,  0.0f, 0.0f, 1.0f,//P
+        0.95f, -0.15, 0.1,  1.0f, 0.0f, 0.0f,//O
+         0.9f, -0.15, 0.1,  0.0f, 1.0f, 0.0f //N
     };
 
     /*//Left Side Rectangle
@@ -115,7 +117,7 @@ int main(int argc = 0, char** argv = nullptr)
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     //Finally send the vertices array in the array buffer (linked to vbo)
-    glBufferData(GL_ARRAY_BUFFER, sizeof(CenterLine), CenterLine, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //Shaders Initialize (Get)
@@ -199,7 +201,7 @@ int main(int argc = 0, char** argv = nullptr)
     // 2. copy our vertices array in a buffer for OpenGL to use
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(CenterLine), CenterLine, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
     // 3. then set our vertex attributes pointers
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
@@ -249,12 +251,14 @@ int main(int argc = 0, char** argv = nullptr)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
 
         // Draw here
-        glUseProgram(shaderProgram);
+        glUseProgram(RectangleVertexShader);
         glBindVertexArray(VAO);
 
         glDrawArrays(GL_TRIANGLE_FAN, 0, 5); //Center Line (Rectangle)
         glDrawArrays(GL_TRIANGLE_FAN, 5, 5); //Center Line (Rectangle)
         glDrawArrays(GL_TRIANGLE_FAN, 10, 5); //Center Line (Rectangle)
+
+        //glUseProgram(shaderProgram);
         SDL_GL_SwapWindow(Window); // Swapbuffer
     }
 
