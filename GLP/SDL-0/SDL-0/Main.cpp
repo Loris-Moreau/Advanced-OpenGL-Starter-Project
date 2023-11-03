@@ -11,7 +11,6 @@ string LoadShader(string fileName);
 
 int main(int argc = 0, char** argv = nullptr) 
 {
-
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) 
     {
         cout << "SDL initialized successfully\n";
@@ -30,7 +29,7 @@ int main(int argc = 0, char** argv = nullptr)
     int width = 1280;
     int height = 720;
     unsigned int center = SDL_WINDOWPOS_CENTERED;
-    SDL_Window* Window = SDL_CreateWindow("SDL Pong (yay) ///0w0///", center, center, width, height, SDL_WINDOW_OPENGL);
+    SDL_Window* Window = SDL_CreateWindow("SDL Pong  ///0w0///", center, center, width, height, SDL_WINDOW_OPENGL);
     //SDL_WINDOW_OPENGL is a u32 flag !
 
     ////Create an OpenGL compatible context to let glew draw on it
@@ -63,6 +62,16 @@ int main(int argc = 0, char** argv = nullptr)
     /// Load
  
     //Describe the shape by its vertices
+    
+    /* 
+    The Points are as Follows :
+    --> Top Left      (X, Y, Z, Colors)
+    --> Bottom Left   (X, Y, Z, Colors)
+    --> Top Right     (X, Y, Z, Colors)
+    --> Bottom Right  (X, Y, Z, Colors)
+    --> Bottom Left   (X, Y, Z, Colors) -> can be removed if you use GL_TRIANGLE_STRIP, but needed if use the GL_TRIANGLE_FAN 
+    */
+
     float Vertices[] =
     {
         //Center Line (Rectangle)
@@ -70,41 +79,38 @@ int main(int argc = 0, char** argv = nullptr)
         -0.01f, -1.0f, 0.0f,     0.0f, 1.0f, 0.0f,//B
          0.01f,  1.0f, 0.0f,     0.0f, 0.0f, 1.0f,//D
         0.01f,  -1.0f, 0.0f,     1.0f, 0.0f, 0.0f,//C
-        -0.01f, -1.0f, 0.0f,     0.0f, 1.0f, 0.0f, //B
+        //-0.01f, -1.0f, 0.0f,     0.0f, 1.0f, 0.0f, //B
 
         //Left Rectangle
-        -0.95f,  0.15f, 0.1,  1.0f, 0.0f, 0.0f,//I
-        -0.95f, -0.15f, 0.1,  0.0f, 1.0f, 0.0f,//L
-         -0.9f,  0.15f, 0.1,  0.0f, 0.0f, 1.0f,//J
-         -0.9f, -0.15f, 0.1,  1.0f, 0.0f, 0.0f,//K
-        -0.95f, -0.15f, 0.1,  1.0f, 1.0f, 0.0f, //L
+        -0.95f,  0.15f, 0.2,  1.0f, 0.0f, 0.0f,//I
+        -0.95f, -0.15f, 0.2,  0.0f, 1.0f, 0.0f,//L
+         -0.9f,  0.15f, 0.2,  0.0f, 0.0f, 1.0f,//J
+         -0.9f, -0.15f, 0.2,  1.0f, 0.0f, 0.0f,//K
+        //-0.95f, -0.15f, 0.2,  1.0f, 1.0f, 0.0f, //L
 
         //Right Rectangle
-        0.9f,  0.15, 0.1,  1.0f, 0.0f, 0.0f,//M
-         0.9f, -0.15, 0.1,  0.0f, 1.0f, 0.0f,//N
-        0.95f,  0.15, 0.1,  0.0f, 0.0f, 1.0f,//P
-        0.95f, -0.15, 0.1,  1.0f, 0.0f, 0.0f,//O
-         0.9f, -0.15, 0.1,  0.0f, 1.0f, 0.0f //N
+        0.9f,  0.15, 0.2,  1.0f, 0.0f, 0.0f,//M
+         0.9f, -0.15, 0.2,  0.0f, 1.0f, 0.0f,//N
+        0.95f,  0.15, 0.2,  0.0f, 0.0f, 1.0f,//P
+        0.95f, -0.15, 0.2,  1.0f, 0.0f, 0.0f,//O
+        // 0.9f, -0.15, 0.2,  0.0f, 1.0f, 0.0f, //N
+
+        //Ball
+        -0.015,  0.015, 0.5,  1.0f, 0.0f, 0.0f,//Q
+        -0.015, -0.015, 0.5,  0.0f, 1.0f, 0.0f,//T
+         0.015,  0.015, 0.5,  0.0f, 0.0f, 1.0f,//R
+         0.015, -0.015, 0.5,  1.0f, 0.0f, 0.0f,//S
+        //-0.015, -0.015, 0.5,  0.0f, 1.0f, 0.0f//T
     };
 
-    /*//Left Side Rectangle
+    /*//Ball
     float LeftRect[] =
     {
-        -0.95f,  0.15f, 0.0f,  1.0f, 0.0f, 0.0f,//I
-        -0.95f, -0.15f, 0.0f,  0.0f, 1.0f, 0.0f,//L
-         -0.9f,  0.15f, 0.0f,  0.0f, 0.0f, 1.0f,//J
-         -0.9f, -0.15f, 0.0f,  1.0f, 0.0f, 0.0f,//K
-        -0.95f, -0.15f, 0.0f,  1.0f, 1.0f, 0.0f //L
-    };*/
-
-    /*//right Side Rectangle
-    float RightRect[] =
-    { 
-         0.9f,  0.15 ,0.0,  1.0f, 0.0f, 0.0f,//M
-         0.9f, -0.15, 0.0,  0.0f, 1.0f, 0.0f,//N
-        0.95f,  0.15, 0.0,  0.0f, 0.0f, 1.0f,//P
-        0.95f, -0.15, 0.0,  1.0f, 0.0f, 0.0f,//O
-         0.9f, -0.15, 0.0,  0.0f, 1.0f, 0.0f //N
+        -0.015,  0.015, 0.5,  1.0f, 0.0f, 0.0f,//Q
+        -0.015, -0.015, 0.5,  0.0f, 1.0f, 0.0f,//T
+         0.015,  0.015, 0.5,  0.0f, 0.0f, 1.0f,//R
+         0.015, -0.015, 0.5,  1.0f, 0.0f, 0.0f,//S
+        -0.015, -0.015, 0.5,  0.0f, 1.0f, 0.0f//T
     };*/
 
     //Create an ID to be given at object generation
@@ -254,11 +260,13 @@ int main(int argc = 0, char** argv = nullptr)
         glUseProgram(RectangleVertexShader);
         glBindVertexArray(VAO);
 
-        glDrawArrays(GL_TRIANGLE_FAN, 0, 5); //Center Line (Rectangle)
-        glDrawArrays(GL_TRIANGLE_FAN, 5, 5); //Center Line (Rectangle)
-        glDrawArrays(GL_TRIANGLE_FAN, 10, 5); //Center Line (Rectangle)
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); //Center Line
+        glDrawArrays(GL_TRIANGLE_STRIP, 4, 4); //Left Padlle
+        glDrawArrays(GL_TRIANGLE_STRIP, 8, 4); //Right Padlle
 
         //glUseProgram(shaderProgram);
+        glDrawArrays(GL_TRIANGLE_STRIP, 12, 4); //Ball
+
         SDL_GL_SwapWindow(Window); // Swapbuffer
     }
 
