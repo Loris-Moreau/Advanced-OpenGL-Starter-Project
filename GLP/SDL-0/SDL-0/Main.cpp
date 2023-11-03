@@ -172,6 +172,12 @@ int main(int argc = 0, char** argv = nullptr) {
     bool isRunning = true;
     while (isRunning) 
     {
+        if (SDL_KEYDOWN == SDL_SCANCODE_E)
+        {
+            isRunning = false;
+            SDL_QUIT;
+        }
+
         // Get the time in seconds 
         float timeValue = (float)SDL_GetTicks() / 1000;
 
@@ -201,7 +207,6 @@ int main(int argc = 0, char** argv = nullptr) {
 
         // Update
         /*
-        
         //float redColor = (sin(timeValue) / 2.0f) + 0.5f;
         float redColor = glGetUniformLocation(shaderProgram, "gl_Position");
         int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
@@ -231,14 +236,19 @@ string LoadShader(string fileName)
 {
     ifstream myFile;
     myFile.open(fileName);
+
     if (myFile.fail()) 
     {
         cerr << "Error - failed to open " << fileName << endl;
     }
+
     string fileText = "";
     string line = "";
-    while (getline(myFile, line)) {
+
+    while (getline(myFile, line)) 
+    {
         fileText += line + '\n';
     }
+
     return fileText;
 }
