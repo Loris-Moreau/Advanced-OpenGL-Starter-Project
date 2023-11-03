@@ -245,6 +245,9 @@ int main(int argc = 0, char** argv = nullptr)
 
             switch (event.type) 
             {
+            case SDL_SCANCODE_G:
+                
+                break;
             case SDL_QUIT:
                 isRunning = false;
                 break;
