@@ -5,6 +5,8 @@
 #include <fstream>
 #include <string>
 
+#include "Log.h"
+
 using namespace std;
 
 string LoadShader(string fileName);
@@ -234,20 +236,31 @@ int main(int argc = 0, char** argv = nullptr)
         glUniform1f(vertexHOffsetLoc, xPos);
         glUniform1f(vertexVOffsetLoc, yPos);*/
 
+        
+        // Keyboard state
+        const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
+        // Escape: quit game
+        //keyboardState[SDL_SCANCODE_ESCAPE]
+
         SDL_Event event;
         while (SDL_PollEvent(&event)) 
         {
-            //to Exit by Pressing the Ecape Key
+            /*//to Exit by Pressing the Ecape Key
             if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
             {
                 isRunning = false;
-            }
+            }*/
 
             switch (event.type) 
             {
-            case SDL_SCANCODE_G:
-                
+            case key.keysym.scancode==SDL_SCANCODE_G:
+                isRunning = false;
                 break;
+
+            case keyboardState[SDL_SCANCODE_ESCAPE]:
+                isRunning = false;
+                    break;
+
             case SDL_QUIT:
                 isRunning = false;
                 break;

@@ -21,13 +21,19 @@
     <ClCompile Include="Main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Fragment.shader">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Vertex.shader">
-      <Filter>Shaders</Filter>
-    </None>
+    <None Include="BallFragment.shader" />
+    <None Include="BallVertex.shader" />
+    <None Include="RectangleFragment.shader" />
+    <None Include="RectangleVertex.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Log.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
