@@ -5,8 +5,6 @@
 #include <fstream>
 #include <string>
 
-#include "Log.h"
-
 using namespace std;
 
 string LoadShader(string fileName);
@@ -117,12 +115,15 @@ int main(int argc = 0, char** argv = nullptr)
 
     //Create an ID to be given at object generation
     unsigned int vbo = 0;
+    unsigned int vbo1 = 1;
 
     //Pass how many buffers should be created and the reference of the ID to get the value set
     glGenBuffers(1, &vbo);
+    glGenBuffers(1, &vbo1);
 
     //Binds the buffer linked to this ID to the vertex array buffer to be rendered. Put 0 instead of vbo to reset the value.
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo1);
 
     //Finally send the vertices array in the array buffer (linked to vbo)
     glBufferData(GL_ARRAY_BUFFER, sizeof(Vertices), Vertices, GL_STATIC_DRAW);
@@ -137,8 +138,8 @@ int main(int argc = 0, char** argv = nullptr)
 
     string rvs = LoadShader("RectangleVertex.shader");
     const char* RectangleVertexShaderSource = rvs.c_str();
-    string rfs = LoadShader("RectangleFragment.shader");
-    const char* RectangleFragmentShaderSource = rfs.c_str();
+    /*string rfs = LoadShader("RectangleFragment.shader");
+    const char* RectangleFragmentShaderSource = rfs.c_str();*/
 
     ///for the ball///
     unsigned int vertexShader;
@@ -153,7 +154,7 @@ int main(int argc = 0, char** argv = nullptr)
     //Do the same with the fragment shader !
     unsigned int fragmentShader;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource,NULL);
     glCompileShader(fragmentShader);
 
     unsigned int shaderProgram;
@@ -183,7 +184,7 @@ int main(int argc = 0, char** argv = nullptr)
     //Do the same with the fragment shader !
     unsigned int RectangleFragmentShader;
     RectangleFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(RectangleFragmentShader, 1, &RectangleFragmentShaderSource, NULL);
+    //glShaderSource(RectangleFragmentShader, 1, &RectangleFragmentShaderSource, NULL);
     glCompileShader(RectangleFragmentShader);
 
     unsigned int RectangleshaderProgram;
@@ -245,21 +246,26 @@ int main(int argc = 0, char** argv = nullptr)
         SDL_Event event;
         while (SDL_PollEvent(&event)) 
         {
-            /*//to Exit by Pressing the Ecape Key
+            //to Exit by Pressing the Ecape Key
             if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
             {
                 isRunning = false;
-            }*/
+            }
 
             switch (event.type) 
             {
-            case key.keysym.scancode==SDL_SCANCODE_G:
+            /*case SDL_SCANCODE_ESCAPE:
+                isRunning = false;
+                break;*/
+
+            /*case key.keysym.scancode == SDL_SCANCODE_G:
                 isRunning = false;
                 break;
 
             case keyboardState[SDL_SCANCODE_ESCAPE]:
                 isRunning = false;
                     break;
+                    */
 
             case SDL_QUIT:
                 isRunning = false;

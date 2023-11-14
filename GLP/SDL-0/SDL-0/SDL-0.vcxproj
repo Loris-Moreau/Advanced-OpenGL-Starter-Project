@@ -81,17 +81,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BallFragment.shader" />
     <None Include="BallVertex.shader" />
-    <None Include="RectangleFragment.shader" />
     <None Include="RectangleVertex.shader" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Log.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
