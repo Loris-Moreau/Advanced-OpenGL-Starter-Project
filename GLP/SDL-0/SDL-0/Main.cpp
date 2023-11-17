@@ -9,7 +9,7 @@ using namespace std;
 
 string LoadShader(string fileName);
 
-int main(int argc = 0, char** argv = nullptr) 
+int main(int argc = 0, char** argv = nullptr)
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         cout << "SDL initialized successfully \n";
@@ -30,14 +30,14 @@ int main(int argc = 0, char** argv = nullptr)
     unsigned int center = SDL_WINDOWPOS_CENTERED;
     SDL_Window* Window = SDL_CreateWindow("Pong of Doom (O//w//O).exe", center, center, width, height, SDL_WINDOW_OPENGL);
     //SDL_WINDOW_OPENGL is a u32 flag !
-    
+
     ////Create an OpenGL compatible context to let glew draw on it
     SDL_GLContext Context = SDL_GL_CreateContext(Window);
 
     /////////SETTING UP OPENGL WITH GLEW///
     //Initialize glew
     glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK) 
+    if (glewInit() != GLEW_OK)
     {
         cout << "Glew failed to initialize\n";
     }
@@ -54,7 +54,7 @@ int main(int argc = 0, char** argv = nullptr)
     float rightPaddleY = 0.0f;
     float paddleSpeed = 0.025f;
     ////
-    
+
     // Get info
     const GLubyte* renderer = glGetString(GL_RENDERER);
     const GLubyte* version = glGetString(GL_VERSION);
@@ -74,7 +74,7 @@ int main(int argc = 0, char** argv = nullptr)
     --> (X, Y, Z, Colors(R, G, B))
     */
 
-    float paddleVertice[] = 
+    float paddleVertice[] =
     {
         //Left
         -0.95f,  0.2f, 0.0f,     1.0f, 0.0f, 0.0f,
@@ -82,14 +82,14 @@ int main(int argc = 0, char** argv = nullptr)
          -0.9f, -0.2f, 0.0f,     0.0f, 0.0f, 1.0f,
          -0.9f,  0.2f, 0.0f,     0.0f, 0.0f, 1.0f,
 
-        //Right
-         0.9f,  0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
-         0.9f, -0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
-        0.95f, -0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
-        0.95f,  0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
+         //Right
+          0.9f,  0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
+          0.9f, -0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
+         0.95f, -0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
+         0.95f,  0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
     };
 
-    float ballVertice[] = 
+    float ballVertice[] =
     {
         ballX - ballRadius, ballY, 0.0f, 1.0f, 0.0f, 0.0f,
         ballX, ballY - ballRadius, 0.0f, 0.0f, 0.0f, 1.0f,
@@ -201,7 +201,7 @@ int main(int argc = 0, char** argv = nullptr)
 
     // Game loop
     bool isRunning = true;
-    while (isRunning) 
+    while (isRunning)
     {
         // Inputs
         float timeValue = (float)SDL_GetTicks() / 1000;
@@ -217,27 +217,27 @@ int main(int argc = 0, char** argv = nullptr)
             isRunning = false;
         }
 
-        if (keyboardState[SDL_SCANCODE_UP] && rightPaddleY < 0.8f) 
+        if (keyboardState[SDL_SCANCODE_UP] && rightPaddleY < 0.8f)
         {
             rightPaddleY += paddleSpeed;
         }
-        if (keyboardState[SDL_SCANCODE_DOWN] && rightPaddleY > -0.8f) 
+        if (keyboardState[SDL_SCANCODE_DOWN] && rightPaddleY > -0.8f)
         {
             rightPaddleY -= paddleSpeed;
         }
-        if (keyboardState[SDL_SCANCODE_W] && leftPaddleY < 0.8f) 
+        if (keyboardState[SDL_SCANCODE_W] && leftPaddleY < 0.8f)
         {
             leftPaddleY += paddleSpeed;
         }
-        if (keyboardState[SDL_SCANCODE_S] && leftPaddleY > -0.8f) 
+        if (keyboardState[SDL_SCANCODE_S] && leftPaddleY > -0.8f)
         {
             leftPaddleY -= paddleSpeed;
         }
 
         SDL_Event event;
-        while (SDL_PollEvent(&event)) 
+        while (SDL_PollEvent(&event))
         {
-            switch (event.type) 
+            switch (event.type)
             {
             case SDL_QUIT:
                 isRunning = false;
@@ -247,23 +247,23 @@ int main(int argc = 0, char** argv = nullptr)
                 break;
             }
         }
-
+        
         // Mise à jour de la position de la balle
         ballX += ballSpeedX;
         ballY += ballSpeedY;
 
-        if (ballY + ballRadius > 1.0f || ballY - ballRadius < -1.0f) 
+        if (ballY + ballRadius > 1.0f || ballY - ballRadius < -1.0f)
         {
             ballSpeedY = -ballSpeedY;
         }
 
-        if ((ballX - ballRadius < -0.8f && ballX + ballRadius > -0.9f && ballY < leftPaddleY + 0.2f && ballY > leftPaddleY - 0.2f) ||
-            (ballX + ballRadius > 0.8f && ballX - ballRadius < 0.9f && ballY < rightPaddleY + 0.2f && ballY > rightPaddleY - 0.2f)) 
+        if ((ballX - ballRadius < -0.9f && ballX + ballRadius > -0.95f && ballY < leftPaddleY + 0.25f && ballY > leftPaddleY - 0.25f) ||
+            (ballX + ballRadius > 0.9f && ballX - ballRadius < 0.95f && ballY < rightPaddleY + 0.25f && ballY > rightPaddleY - 0.25f))
         {
             ballSpeedX = -ballSpeedX;
         }
 
-        if (ballX + ballRadius < -1.0f || ballX - ballRadius > 1.0f) 
+        if (ballX + ballRadius < -1.0f || ballX - ballRadius > 1.0f)
         {
             ballX = 0.0f;
             ballY = 0.0f;
@@ -273,7 +273,8 @@ int main(int argc = 0, char** argv = nullptr)
         }
 
         // Mettez à jour les coordonnées des vertices de la balle
-        float ballVertices[] = {
+        float ballVertices[] = 
+        {
             ballX - ballRadius, ballY, 0.0f, 1.0f, 0.0f, 0.0f,
             ballX, ballY - ballRadius, 0.0f, 0.0f, 0.0f, 1.0f,
             ballX + ballRadius, ballY, 0.0f, 1.0f, 0.0f, 0.0f,
@@ -292,7 +293,7 @@ int main(int argc = 0, char** argv = nullptr)
         glUniform1f(offsetLocation, rightPaddleY);
         glDrawArrays(GL_TRIANGLE_FAN, 4, 4);
         glDrawArrays(GL_TRIANGLE_FAN, 8, 4);
-
+        
         glBindVertexArray(VAOBall);
         glUseProgram(ballShaderProgram);
         unsigned int movementLocation = glGetUniformLocation(ballShaderProgram, "movement");
@@ -311,7 +312,7 @@ int main(int argc = 0, char** argv = nullptr)
 string LoadShader(string fileName) {
     ifstream myFile;
     myFile.open(fileName);
-    if (myFile.fail()) 
+    if (myFile.fail())
     {
         cerr << "Error - failed to open " << fileName << endl;
     }
@@ -319,7 +320,7 @@ string LoadShader(string fileName) {
     string fileText = "";
     string line = "";
 
-    while (getline(myFile, line)) 
+    while (getline(myFile, line))
     {
         fileText += line + '\n';
     }
