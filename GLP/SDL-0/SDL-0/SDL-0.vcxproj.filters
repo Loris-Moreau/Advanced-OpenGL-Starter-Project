@@ -23,8 +23,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BallFragment.shader" />
+    <None Include="Fragment.shader" />
     <None Include="BallVertex.shader" />
-    <None Include="RectangleVertex.shader" />
+    <None Include="Vertex.shader" />
   </ItemGroup>
 </Project>

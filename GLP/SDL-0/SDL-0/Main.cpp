@@ -9,8 +9,8 @@ using namespace std;
 
 string LoadShader(string fileName);
 
-int main(int argc = 0, char** argv = nullptr) {
-
+int main(int argc = 0, char** argv = nullptr) 
+{
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         cout << "SDL initialized successfully \n";
     }
@@ -19,6 +19,7 @@ int main(int argc = 0, char** argv = nullptr) {
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         cout << "SDL failed to initialize" << endl;
+        cout << "(づ｡◕‿‿◕｡)づ  (⎻▵ ⎻)" << endl;
         return 1;
     }
 
@@ -27,25 +28,38 @@ int main(int argc = 0, char** argv = nullptr) {
     int width = 900;
     int height = 600;
     unsigned int center = SDL_WINDOWPOS_CENTERED;
-    SDL_Window* Window = SDL_CreateWindow("Pong OpenGLShader.exe", center, center, width, height, SDL_WINDOW_OPENGL);
+    SDL_Window* Window = SDL_CreateWindow("Pong of Doom (O//w//O).exe", center, center, width, height, SDL_WINDOW_OPENGL);
     //SDL_WINDOW_OPENGL is a u32 flag !
-
-
+    
     ////Create an OpenGL compatible context to let glew draw on it
     SDL_GLContext Context = SDL_GL_CreateContext(Window);
 
     /////////SETTING UP OPENGL WITH GLEW///
     //Initialize glew
     glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK) {
+    if (glewInit() != GLEW_OK) 
+    {
         cout << "Glew failed to initialize\n";
     }
 
+    ////Object Info////
+    //ball
+    float ballX = 0.0f;
+    float ballY = 0.0f;
+    float ballSpeedX = 0.007f;
+    float ballSpeedY = 0.007f;
+    float ballRadius = 0.025f;
+    //Paddles
+    float leftPaddleY = 0.0f;
+    float rightPaddleY = 0.0f;
+    float paddleSpeed = 0.025f;
+    ////
+    
     // Get info
     const GLubyte* renderer = glGetString(GL_RENDERER);
     const GLubyte* version = glGetString(GL_VERSION);
-    cout << "Renderer: " << renderer << endl;
-    cout << "OpenGL version supported: " << version << endl;
+    cout << "Renderer : " << renderer << endl;
+    cout << "OpenGL version supported : " << version << endl;
 
     // Tell GL to only draw onto a pixel if the shape is closer to the viewer
     glEnable(GL_DEPTH_TEST); // enable depth-testing
@@ -55,24 +69,51 @@ int main(int argc = 0, char** argv = nullptr) {
     glViewport(0, 0, width, height);
     glClearColor(0.0f, 0.0f, 0.2f, 1.0f);
 
+    /*
+    The Points are as Follows :
+    --> (X, Y, Z, Colors(R, G, B))
+    */
+
+    float paddleVertice[] = 
+    {
+        //Left
+        -0.95f,  0.2f, 0.0f,     1.0f, 0.0f, 0.0f,
+        -0.95f, -0.2f, 0.0f,     0.0f, 0.0f, 1.0f,
+         -0.9f, -0.2f, 0.0f,     0.0f, 0.0f, 1.0f,
+         -0.9f,  0.2f, 0.0f,     0.0f, 0.0f, 1.0f,
+
+        //Right
+         0.9f,  0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
+         0.9f, -0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
+        0.95f, -0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
+        0.95f,  0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
+    };
+
+    float ballVertice[] = 
+    {
+        ballX - ballRadius, ballY, 0.0f, 1.0f, 0.0f, 0.0f,
+        ballX, ballY - ballRadius, 0.0f, 0.0f, 0.0f, 1.0f,
+        ballX + ballRadius, ballY, 0.0f, 1.0f, 0.0f, 0.0f,
+        ballX, ballY + ballRadius, 0.0f, 0.0f, 0.0f, 1.0f,
+    };
+
     //Create an ID to be given at object generation
-    unsigned int vbo = 0;
-    unsigned int vbo1 = 1;
+    //Vertex Buffer Objects (VBO)
+    unsigned int VBO;
+    unsigned int VBO1;
 
     //Pass how many buffers should be created and the reference of the ID to get the value set
-    glGenBuffers(1, &vbo);
-    glGenBuffers(1, &vbo1);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &VBO1);
 
     //Binds the buffer linked to this ID to the vertex array buffer to be rendered. Put 0 instead of vbo to reset the value.
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo1);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO1);
 
     //Finally send the vertices array in the array buffer (linked to vbo)
-   /* glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); */
-
-    string vs = LoadShader("RectangleVertex.shader");
+    string vs = LoadShader("Vertex.shader");
     const char* vertexShaderSource = vs.c_str();
-    string fs = LoadShader("BallFragment.shader");
+    string fs = LoadShader("Fragment.shader");
     const char* fragmentShaderSource = fs.c_str();
     string bvs = LoadShader("BallVertex.shader");
     const char* ballVertexShaderSource = bvs.c_str();
@@ -86,8 +127,11 @@ int main(int argc = 0, char** argv = nullptr) {
     //now that we have a vertex shader, let’s put the code text inside
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 
+    glShaderSource(ballVertexShader, 1, &ballVertexShaderSource, NULL);
+
     //aaaaand… Compile !
     glCompileShader(vertexShader);
+    glCompileShader(ballVertexShader);
 
     //Do the same with the fragment shader !
     unsigned int fragmentShader;
@@ -95,19 +139,22 @@ int main(int argc = 0, char** argv = nullptr) {
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
+
+    unsigned int paddleShaderProgram;
+    paddleShaderProgram = glCreateProgram();
 
     //now attach shaders to use to the program
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glAttachShader(shaderProgram, ballVertexShader);
+    glAttachShader(paddleShaderProgram, vertexShader);
+    glAttachShader(paddleShaderProgram, fragmentShader);
 
     //and link it 
-    glLinkProgram(shaderProgram);
+    glLinkProgram(paddleShaderProgram);
+    unsigned int ballShaderProgram;
+    ballShaderProgram = glCreateProgram();
 
-    //now that the program is complete, we can use it 
-    glUseProgram(shaderProgram);
+    //now attach shaders to use to the program
+    glAttachShader(ballShaderProgram, ballVertexShader);
+    glAttachShader(ballShaderProgram, fragmentShader);
 
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
@@ -115,9 +162,10 @@ int main(int argc = 0, char** argv = nullptr) {
     // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
     // 1. bind Vertex Array Object
     glBindVertexArray(VAO);
+
     // 2. copy our vertices array in a buffer for OpenGL to use
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    /*glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);*/
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(paddleVertice), paddleVertice, GL_STATIC_DRAW);
 
     // Position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
@@ -126,47 +174,71 @@ int main(int argc = 0, char** argv = nullptr) {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    // Déclarez des variables pour les paddles
-    float leftPaddleY = 0.0f;
-    float rightPaddleY = 0.0f;
-    float paddleSpeed = 0.005f;
+    unsigned int VAOBall;
+    glGenVertexArrays(1, &VAOBall);
 
-    // Déclarez des variables pour la balle
-    float ballX = 0.0f;
-    float ballY = 0.0f;
-    float ballSpeedX = 0.0005f;
-    float ballSpeedY = 0.0005f;
-    float ballRadius = 0.02f;
+    // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
+    // 1. bind Vertex Array Object (VAO)
+    glBindVertexArray(VAOBall);
+    // 2. copy our vertices array in a buffer for OpenGL to use
+    glBindBuffer(GL_ARRAY_BUFFER, VBO1);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(ballVertice), paddleVertice, GL_STATIC_DRAW);
+
+
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(ballVertice), ballVertice, GL_STATIC_DRAW);
+
+    glLinkProgram(ballShaderProgram);
+
+    glUseProgram(ballShaderProgram);
+    unsigned int movementLocation = glGetUniformLocation(ballShaderProgram, "movement");
 
     // Game loop
     bool isRunning = true;
-    while (isRunning) {
+    while (isRunning) 
+    {
         // Inputs
         float timeValue = (float)SDL_GetTicks() / 1000;
         float xPos = (sin(timeValue));
 
-        int vertexOffsetLocation = glGetUniformLocation(shaderProgram, "offset");
-        glUseProgram(shaderProgram);
+        int vertexOffsetLocation = glGetUniformLocation(paddleShaderProgram, "offset");
+        glUseProgram(paddleShaderProgram);
         glUniform1f(vertexOffsetLocation, xPos);
 
-        // Mise à jour des positions des paddles en fonction des entrées utilisateur
-        const Uint8* keys = SDL_GetKeyboardState(NULL);
-        if (keys[SDL_SCANCODE_UP] && rightPaddleY < 0.8f) {
+        const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+        if (keyboardState[SDL_SCANCODE_ESCAPE])
+        {
+            isRunning = false;
+        }
+
+        if (keyboardState[SDL_SCANCODE_UP] && rightPaddleY < 0.8f) 
+        {
             rightPaddleY += paddleSpeed;
         }
-        if (keys[SDL_SCANCODE_DOWN] && rightPaddleY > -0.8f) {
+        if (keyboardState[SDL_SCANCODE_DOWN] && rightPaddleY > -0.8f) 
+        {
             rightPaddleY -= paddleSpeed;
         }
-        if (keys[SDL_SCANCODE_Z] && leftPaddleY < 0.8f) {
+        if (keyboardState[SDL_SCANCODE_W] && leftPaddleY < 0.8f) 
+        {
             leftPaddleY += paddleSpeed;
         }
-        if (keys[SDL_SCANCODE_S] && leftPaddleY > -0.8f) {
+        if (keyboardState[SDL_SCANCODE_S] && leftPaddleY > -0.8f) 
+        {
             leftPaddleY -= paddleSpeed;
         }
 
         SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
+        while (SDL_PollEvent(&event)) 
+        {
+            switch (event.type) 
+            {
             case SDL_QUIT:
                 isRunning = false;
                 break;
@@ -175,43 +247,27 @@ int main(int argc = 0, char** argv = nullptr) {
                 break;
             }
         }
-        // Update
-        // Mettez à jour les coordonnées des vertices des paddles
-        float paddleVertices[] =
-        {
-            // Gauche
-            -0.9f, 0.2f + leftPaddleY, 0.0f, 1.0f, 0.0f, 0.0f,
-            -0.9f, -0.2f + leftPaddleY, 0.0f, 0.0f, 0.0f, 1.0f,
-            -0.8f, -0.2f + leftPaddleY, 0.0f, 0.0f, 0.0f, 1.0f,
-            -0.8f, 0.2f + leftPaddleY, 0.0f, 0.0f, 0.0f, 1.0f,
-
-            // Droite
-            0.8f, 0.2f + rightPaddleY, 0.0f, 0.0f, 0.0f, 1.0f,
-            0.8, -0.2f + rightPaddleY, 0.0f, 0.0f, 0.0f, 1.0f,
-            0.9f, -0.2f + rightPaddleY, 0.0f, 0.0f, 0.0f, 1.0f,
-            0.9f, 0.2f + rightPaddleY, 0.0f, 0.0f, 0.0f, 1.0f,
-        };
 
         // Mise à jour de la position de la balle
         ballX += ballSpeedX;
         ballY += ballSpeedY;
 
-        // Gestion des collisions avec les murs verticaux
-        if (ballY + ballRadius > 1.0f || ballY - ballRadius < -1.0f) {
-            ballSpeedY = -ballSpeedY; // Inverser la direction en cas de collision
+        if (ballY + ballRadius > 1.0f || ballY - ballRadius < -1.0f) 
+        {
+            ballSpeedY = -ballSpeedY;
         }
 
-        // Gestion des collisions avec les paddles
         if ((ballX - ballRadius < -0.8f && ballX + ballRadius > -0.9f && ballY < leftPaddleY + 0.2f && ballY > leftPaddleY - 0.2f) ||
-            (ballX + ballRadius > 0.8f && ballX - ballRadius < 0.9f && ballY < rightPaddleY + 0.2f && ballY > rightPaddleY - 0.2f)) {
-            ballSpeedX = -ballSpeedX; // Inverser la direction en cas de collision avec les paddles
+            (ballX + ballRadius > 0.8f && ballX - ballRadius < 0.9f && ballY < rightPaddleY + 0.2f && ballY > rightPaddleY - 0.2f)) 
+        {
+            ballSpeedX = -ballSpeedX;
         }
 
-        // Gestion des scores (exemple : remise à zéro si la balle sort de l'écran)
-        if (ballX + ballRadius < -1.0f || ballX - ballRadius > 1.0f) {
+        if (ballX + ballRadius < -1.0f || ballX - ballRadius > 1.0f) 
+        {
             ballX = 0.0f;
             ballY = 0.0f;
-            // Réinitialiser la vitesse de la balle si nécessaire
+            // Réinitialiser la vitesse de la balle 
             // ballSpeedX = 0.005f;
             // ballSpeedY = 0.005f;
         }
@@ -227,16 +283,22 @@ int main(int argc = 0, char** argv = nullptr) {
         // Draw
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
 
-        // Draw here
-        glUseProgram(shaderProgram);
+        // Draw here    
         glBindVertexArray(VAO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(paddleVertices), paddleVertices, GL_STATIC_DRAW);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(ballVertices), ballVertices, GL_STATIC_DRAW);
+        glUseProgram(paddleShaderProgram);
+        unsigned int offsetLocation = glGetUniformLocation(paddleShaderProgram, "offset");
+        glUniform1f(offsetLocation, leftPaddleY);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+        glUniform1f(offsetLocation, rightPaddleY);
         glDrawArrays(GL_TRIANGLE_FAN, 4, 4);
         glDrawArrays(GL_TRIANGLE_FAN, 8, 4);
-        glDrawArrays(GL_TRIANGLE_FAN, 12, 4);
-        SDL_GL_SwapWindow(Window); // Swapbuffer
+
+        glBindVertexArray(VAOBall);
+        glUseProgram(ballShaderProgram);
+        unsigned int movementLocation = glGetUniformLocation(ballShaderProgram, "movement");
+        glUniform2f(movementLocation, ballX, ballY);
+        glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+        SDL_GL_SwapWindow(Window); //Swapbuffer
     }
 
     // Quit
@@ -249,14 +311,16 @@ int main(int argc = 0, char** argv = nullptr) {
 string LoadShader(string fileName) {
     ifstream myFile;
     myFile.open(fileName);
-    if (myFile.fail()) {
+    if (myFile.fail()) 
+    {
         cerr << "Error - failed to open " << fileName << endl;
     }
 
     string fileText = "";
     string line = "";
 
-    while (getline(myFile, line)) {
+    while (getline(myFile, line)) 
+    {
         fileText += line + '\n';
     }
 
