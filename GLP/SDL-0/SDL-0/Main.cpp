@@ -7,7 +7,7 @@
 
 using namespace std;
 
-string LoadShader(string fileName);
+string LoadShader(const string& fileName);
 
 int main(int argc = 0, char** argv = nullptr)
 {
@@ -18,21 +18,21 @@ int main(int argc = 0, char** argv = nullptr)
     int flags = SDL_WINDOW_OPENGL;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-        cout << "SDL failed to initialize" << endl;
-        cout << "(づ｡◕‿‿◕｡)づ  (⎻▵ ⎻)" << endl;
+        cout << "SDL failed to initialize" << '\n';
+        cout << "(づ｡◕‿‿◕｡)づ  (⎻▵ ⎻)" << '\n';
         return 1;
     }
 
     ///////////SETTING UP SDL/////////////
     //Create a simple window
-    int width = 900;
-    int height = 600;
-    unsigned int center = SDL_WINDOWPOS_CENTERED;
+    constexpr int width = 900;
+    constexpr int height = 600;
+    constexpr unsigned int center = SDL_WINDOWPOS_CENTERED;
     SDL_Window* Window = SDL_CreateWindow("Pong of Doom (O//w//O).exe", center, center, width, height, SDL_WINDOW_OPENGL);
     //SDL_WINDOW_OPENGL is a u32 flag !
 
     ////Create an OpenGL compatible context to let glew draw on it
-    SDL_GLContext Context = SDL_GL_CreateContext(Window);
+    const SDL_GLContext Context = SDL_GL_CreateContext(Window);
 
     /////////SETTING UP OPENGL WITH GLEW///
     //Initialize glew
@@ -48,18 +48,17 @@ int main(int argc = 0, char** argv = nullptr)
     float ballY = 0.0f;
     float ballSpeedX = 0.007f;
     float ballSpeedY = 0.007f;
-    float ballRadius = 0.025f;
+    constexpr float ballRadius = 0.025f;
     //Paddles
     float leftPaddleY = 0.0f;
     float rightPaddleY = 0.0f;
-    float paddleSpeed = 0.025f;
     ////
 
     // Get info
     const GLubyte* renderer = glGetString(GL_RENDERER);
     const GLubyte* version = glGetString(GL_VERSION);
-    cout << "Renderer : " << renderer << endl;
-    cout << "OpenGL version supported : " << version << endl;
+    cout << "Renderer : " << renderer << '\n';
+    cout << "OpenGL version supported : " << version << '\n';
 
     // Tell GL to only draw onto a pixel if the shape is closer to the viewer
     glEnable(GL_DEPTH_TEST); // enable depth-testing
@@ -74,7 +73,7 @@ int main(int argc = 0, char** argv = nullptr)
     --> (X, Y, Z, Colors(R, G, B))
     */
 
-    float paddleVertice[] =
+    constexpr float paddleVertice[] =
     {
         //Left
         -0.95f,  0.2f, 0.0f,     1.0f, 0.0f, 0.0f,
@@ -89,7 +88,7 @@ int main(int argc = 0, char** argv = nullptr)
          0.95f,  0.2f, 0.0f,      0.0f, 0.0f, 1.0f,
     };
 
-    float ballVertice[] =
+    const float ballVertice[] =
     {
         ballX - ballRadius, ballY, 0.0f, 1.0f, 0.0f, 0.0f,
         ballX, ballY - ballRadius, 0.0f, 0.0f, 0.0f, 1.0f,
@@ -111,18 +110,16 @@ int main(int argc = 0, char** argv = nullptr)
     glBindBuffer(GL_ARRAY_BUFFER, VBO1);
 
     //Finally send the vertices array in the array buffer (linked to vbo)
-    string vs = LoadShader("Vertex.shader");
+    const string vs = LoadShader("Vertex.shader");
     const char* vertexShaderSource = vs.c_str();
-    string fs = LoadShader("Fragment.shader");
+    const string fs = LoadShader("Fragment.shader");
     const char* fragmentShaderSource = fs.c_str();
-    string bvs = LoadShader("BallVertex.shader");
+    const string bvs = LoadShader("BallVertex.shader");
     const char* ballVertexShaderSource = bvs.c_str();
 
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    const unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
-    unsigned int ballVertexShader;
-    ballVertexShader = glCreateShader(GL_VERTEX_SHADER);
+    const unsigned int ballVertexShader = glCreateShader(GL_VERTEX_SHADER);
 
     //now that we have a vertex shader, let’s put the code text inside
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -134,14 +131,12 @@ int main(int argc = 0, char** argv = nullptr)
     glCompileShader(ballVertexShader);
 
     //Do the same with the fragment shader !
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    const unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
 
-    unsigned int paddleShaderProgram;
-    paddleShaderProgram = glCreateProgram();
+    const unsigned int paddleShaderProgram = glCreateProgram();
 
     //now attach shaders to use to the program
     glAttachShader(paddleShaderProgram, vertexShader);
@@ -149,8 +144,7 @@ int main(int argc = 0, char** argv = nullptr)
 
     //and link it 
     glLinkProgram(paddleShaderProgram);
-    unsigned int ballShaderProgram;
-    ballShaderProgram = glCreateProgram();
+    const unsigned int ballShaderProgram = glCreateProgram();
 
     //now attach shaders to use to the program
     glAttachShader(ballShaderProgram, ballVertexShader);
@@ -203,11 +197,12 @@ int main(int argc = 0, char** argv = nullptr)
     bool isRunning = true;
     while (isRunning)
     {
+        constexpr float paddleSpeed = 0.025f;
         // Inputs
-        float timeValue = (float)SDL_GetTicks() / 1000;
-        float xPos = (sin(timeValue));
+        const float timeValue = (float)SDL_GetTicks() / 1000;
+        const float xPos = (sin(timeValue));
 
-        int vertexOffsetLocation = glGetUniformLocation(paddleShaderProgram, "offset");
+        const int vertexOffsetLocation = glGetUniformLocation(paddleShaderProgram, "offset");
         glUseProgram(paddleShaderProgram);
         glUniform1f(vertexOffsetLocation, xPos);
 
@@ -287,7 +282,7 @@ int main(int argc = 0, char** argv = nullptr)
         // Draw here    
         glBindVertexArray(VAO);
         glUseProgram(paddleShaderProgram);
-        unsigned int offsetLocation = glGetUniformLocation(paddleShaderProgram, "offset");
+        const unsigned int offsetLocation = glGetUniformLocation(paddleShaderProgram, "offset");
         glUniform1f(offsetLocation, leftPaddleY);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
         glUniform1f(offsetLocation, rightPaddleY);
@@ -296,7 +291,7 @@ int main(int argc = 0, char** argv = nullptr)
         
         glBindVertexArray(VAOBall);
         glUseProgram(ballShaderProgram);
-        unsigned int movementLocation = glGetUniformLocation(ballShaderProgram, "movement");
+        const unsigned int movementLocation = glGetUniformLocation(ballShaderProgram, "movement");
         glUniform2f(movementLocation, ballX, ballY);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
         SDL_GL_SwapWindow(Window); //Swapbuffer
@@ -309,12 +304,12 @@ int main(int argc = 0, char** argv = nullptr)
     return 0;
 }
 
-string LoadShader(string fileName) {
+string LoadShader(const string& fileName) {
     ifstream myFile;
     myFile.open(fileName);
     if (myFile.fail())
     {
-        cerr << "Error - failed to open " << fileName << endl;
+        cerr << "Error - failed to open " << fileName << '\n';
     }
 
     string fileText = "";
