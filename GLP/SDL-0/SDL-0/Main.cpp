@@ -206,7 +206,7 @@ int main(int argc = 0, char** argv = nullptr)
         glUseProgram(paddleShaderProgram);
         glUniform1f(vertexOffsetLocation, xPos);
 
-        const Uint8* keyboardState = SDL_GetKeyboardState(NULL);
+        const Uint8* keyboardState = SDL_GetKeyboardState(nullptr);
         if (keyboardState[SDL_SCANCODE_ESCAPE])
         {
             isRunning = false;
@@ -228,7 +228,7 @@ int main(int argc = 0, char** argv = nullptr)
         {
             leftPaddleY -= paddleSpeed;
         }
-
+        
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
