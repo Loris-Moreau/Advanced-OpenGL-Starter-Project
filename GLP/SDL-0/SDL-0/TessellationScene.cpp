@@ -67,13 +67,11 @@ void TessellationScene::UpdateScene()
 {
 	float timeValue = static_cast<float>(SDL_GetTicks()) / 500;
 	float sinusoidValue = 2 * (sin(timeValue));
-	
 	float timeValue2 = static_cast<float>(SDL_GetTicks()) / 1000;
 	float sinusoidValue2 = 2 * (sin(timeValue2));
 	
 	int outerVertexRatio = glGetUniformLocation(m_shaderProgram.GetID(), "outerRatio");
 	glUniform1f(outerVertexRatio, 2 * (sinusoidValue + 2));
-	
 	int innerVertexRatio = glGetUniformLocation(m_shaderProgram.GetID(), "innerRatio");
 	glUniform1f(innerVertexRatio, 2 * (sinusoidValue2 + 2));
 	

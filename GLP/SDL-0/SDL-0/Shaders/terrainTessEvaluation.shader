@@ -19,11 +19,9 @@ out TES_OUT
     vec2 tc;
 
 /*
-
     // Optional, for fog
     vec3 world_coord;
     vec3 eye_coord;
-
 */
 
 } tes_out;
@@ -41,8 +39,8 @@ void main(void)
 
     gl_Position = mvp_matrix * p;
     tes_out.tc = tc;
+    
     /*
-
         // Optional: Compute eye position for fog
         vec4 P_eye = mv_matrix * p;
 
@@ -51,6 +49,5 @@ void main(void)
         tes_out.eye_coord = P_eye.xyz;
 
         gl_Position = proj_matrix * P_eye;
-
     */
 }

@@ -16,20 +16,22 @@ int main(int argc, char* argv[])
 	Window window(900.0f, 750.0f, Color(0.0f, 0.0f, 0.2f, 1.0f));
 
 	//Use a SceneID (see SceneManagement.h) to quickly setup the correct scene for the build!
-	Scene* scene = SceneSelector(TERRAIN_TESSELLATION);
+	Scene* scene = SceneSelector(CUBES);
 	if (scene == nullptr) return 1; //Scene doesn't exist yet
 
 	//Preparing shaders, shader programs, vao and vbo
 	scene->SetupScene();
-
 	
 	//Loop that keeps the window alive
 	bool isRunning = true;
-	while (isRunning) {
+	while (isRunning)
+	{
 		// Inputs
 		SDL_Event event;
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
+		while (SDL_PollEvent(&event))
+		{
+			switch (event.type)
+			{
 			//If the user tries to quit the window, stop execution
 			case SDL_QUIT:
 				isRunning = false;
@@ -45,13 +47,10 @@ int main(int argc, char* argv[])
 		scene->UpdateScene();
 		//Swap the buffers --> Display the newly computed one, hide the one displayed last frame
 		window.Update();
-
 	}
 	
 	// Quit
 	window.Close();
-
-
+	
 	return 0;
 }
-
