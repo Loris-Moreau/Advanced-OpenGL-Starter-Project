@@ -1,12 +1,12 @@
 #include "TerrainTessellationScene.h"
 
-
 TerrainTessellationScene::TerrainTessellationScene():
 	dmapDepth(8.0f), isFogEnabled(true), isDisplacementEnabled(true),
 	wireframe(false), paused(false), totalTime(0){}
 
 
-void TerrainTessellationScene::LoadShaders() {
+void TerrainTessellationScene::LoadShaders()
+{
 	m_vertexShader.LoadFrom("terrainTessVertex.shader", VERTEX);
 	m_fragmentShader.LoadFrom("terrainTessFragment.shader", FRAGMENT);
 	m_tessControlShader.LoadFrom("terrainTessControl.shader", TESSELLATION_CONTROL);
@@ -14,7 +14,8 @@ void TerrainTessellationScene::LoadShaders() {
 
 }
 
-void TerrainTessellationScene::SetupScene() {
+void TerrainTessellationScene::SetupScene()
+{
 	LoadShaders();
 	CreateShaderPrograms();
 
@@ -42,8 +43,9 @@ void TerrainTessellationScene::SetupScene() {
 
 }
 
-void TerrainTessellationScene::UpdateScene() {
-	totalTime = (float)SDL_GetTicks() / 1000;
+void TerrainTessellationScene::UpdateScene()
+{
+	totalTime = static_cast<float>(SDL_GetTicks()) / 1000;
 	t = totalTime * 0.03f;
 	r = sinf(t * 5.37f) * 15.0f + 16.0f;
 	h = cosf(t * 4.79f) * 2.0f + 10.2f;
