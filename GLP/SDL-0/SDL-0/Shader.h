@@ -5,7 +5,8 @@
 #include <SDL.h>
 #include "glew.h"
 
-enum ShaderType {
+enum ShaderType
+{
 	VERTEX,
 	FRAGMENT,
 	TESSELLATION_CONTROL,

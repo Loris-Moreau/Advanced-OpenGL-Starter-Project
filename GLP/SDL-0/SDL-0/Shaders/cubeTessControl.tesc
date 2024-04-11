@@ -4,6 +4,8 @@ layout (vertices = 3) out;
 
 uniform float outerRatio;
 uniform float innerRatio;
+//in VS_OUT {vec4 color;} tesc_in[];
+//out TESC_OUT {vec4 color;} tesc_out[];
 
 void main(void)
 {
@@ -16,4 +18,5 @@ void main(void)
         gl_TessLevelOuter[2] = outerRatio;
     }
     gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
+    //tesc_out[gl_InvocationID].color = tesc_in[gl_InvocationID].color;
 }

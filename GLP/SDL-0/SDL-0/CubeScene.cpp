@@ -9,6 +9,7 @@ void CubeScene::LoadShaders()
 {
 	m_vertexShader.LoadFrom("cube.vert", VERTEX);
 	m_fragmentShader.LoadFrom("cube.frag", FRAGMENT);
+	m_fragmentShader2.LoadFrom("cube2.frag", FRAGMENT);
 	
 	m_tessControl.LoadFrom("cubeTessControl.tesc", TESSELLATION_CONTROL);
 	m_tessEval.LoadFrom("cubeTessEval.tese", TESSELLATION_EVALUATION);
@@ -23,7 +24,8 @@ void CubeScene::CreateShaderPrograms()
 		{
 			& m_vertexShader,
 			& m_tessControl,
-			& m_tessEval
+			& m_tessEval,
+			& m_fragmentShader2
 		}
 	);
 }
