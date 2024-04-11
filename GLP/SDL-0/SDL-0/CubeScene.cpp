@@ -3,22 +3,29 @@
 #include "MeshObject.h"
 #include "Window.h"
 
-CubeScene::CubeScene()
-{}
+CubeScene::CubeScene() {}
 
 void CubeScene::LoadShaders()
 {
 	m_vertexShader.LoadFrom("cube.vert", VERTEX);
 	m_fragmentShader.LoadFrom("cube.frag", FRAGMENT);
 	
-	m_tessControl.LoadFrom("cubeTessControl.shader", TESSELLATION_CONTROL);
-	m_tessEval.LoadFrom("cubeTessEval.shader", TESSELLATION_EVALUATION);
+	m_tessControl.LoadFrom("cubeTessControl.tesc", TESSELLATION_CONTROL);
+	m_tessEval.LoadFrom("cubeTessEval.tese", TESSELLATION_EVALUATION);
 }
 
 void CubeScene::CreateShaderPrograms()
 {
 	m_Program.Compose({&m_vertexShader, &m_fragmentShader});
-	m_TessProgram.Compose({&m_tessControl, &m_tessEval});
+	m_TessProgram.Compose
+	(
+		std::vector<Shader*>
+		{
+			& m_vertexShader,
+			& m_tessControl,
+			& m_tessEval
+		}
+	);
 }
 
 void CubeScene::VerticeInformationSlicer()
@@ -106,11 +113,11 @@ void CubeScene::SetupScene()
 	glDepthFunc(GL_LEQUAL);
 
 	// Creating and loading the simple texture
-	Texture2D m_WallTexture = Texture2D();
-	m_WallTexture.load("Textures/wall.png");
-	m_WallTexture.generate();
-	m_WallTexture.use();
-	glGenerateTextureMipmap(m_WallTexture.id);
+	texture = Texture2D();
+	texture.load("Textures/wall.png");
+	texture.generate();
+	texture.use();
+	glGenerateTextureMipmap(texture.id);
 	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_LINEAR_MIPMAP_LINEAR );
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_LINEAR_MIPMAP_LINEAR );
@@ -134,24 +141,30 @@ void CubeScene::UpdateScene()
 	rotation *= rotationY;
 	rotation *= rotationZ;
 	mv = mv * rotation;
-	
+
+	// Wall Cube
 	m_Program.setMatrix4("mv_matrix", mv);
 	m_Program.setMatrix4("projection", projection);
-	// Wall Cube
+	
 	glDrawArrays(GL_TRIANGLES, 0, 36);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+	
 	//Wire Mesh Cube
+	mv = Matrix4::createTranslation(position + Vector3(0.5f,0,0));
+	mv = mv * rotation;
+	//m_Program.setMatrix4("mv_matrix", mv);
+	
+	m_TessProgram.Use();
+	m_TessProgram.setMatrix4("mv_matrix", mv);
+	m_TessProgram.setMatrix4("projection", projection);
+	
 	int outerVertexRatio = glGetUniformLocation(m_TessProgram.GetID(), "outerRatio");
 	glUniform1f(outerVertexRatio, 2 * (sinusoidValue + 2));
 	int innerVertexRatio = glGetUniformLocation(m_TessProgram.GetID(), "innerRatio");
 	glUniform1f(innerVertexRatio, 2 * (sinusoidValue + 2));
 	
-	mv = Matrix4::createTranslation(position + Vector3(0.5f,0,0));
-	mv = mv * rotation;
-	m_Program.setMatrix4("mv_matrix", mv);
-	
-	m_TessProgram.Use();
 	glPointSize(5.0f);
+	
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDrawArrays(GL_PATCHES, 0, 36);
 }

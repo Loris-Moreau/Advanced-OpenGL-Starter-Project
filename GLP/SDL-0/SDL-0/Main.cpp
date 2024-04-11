@@ -21,7 +21,6 @@ int main(int argc, char* argv[])
 
 	//Preparing shaders, shader programs, vao and vbo
 	scene->SetupScene();
-	
 	//Loop that keeps the window alive
 	bool isRunning = true;
 	while (isRunning)
@@ -42,7 +41,8 @@ int main(int argc, char* argv[])
 			scene->HandleInputs(event);
 		}
 		// Clear the screen
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.65, 0.65, 0.65, 1.0);
 		//Drawing the shapes and filling the buffer
 		scene->UpdateScene();
 		//Swap the buffers --> Display the newly computed one, hide the one displayed last frame

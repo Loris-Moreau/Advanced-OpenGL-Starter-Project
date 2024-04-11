@@ -160,8 +160,8 @@
   <ItemGroup>
     <Content Include="Shaders\cube.frag" />
     <Content Include="Shaders\cube.vert" />
-    <Content Include="Shaders\cubeTessControl.shader" />
-    <Content Include="Shaders\cubeTessEval.shader" />
+    <Content Include="Shaders\cubeTessControl.tesc" />
+    <Content Include="Shaders\cubeTessEval.tese" />
     <Content Include="Shaders\QuadTessellationControl.shader" />
     <Content Include="Shaders\QuadTessellationEval.shader" />
     <Content Include="Shaders\QuadTessellationVertex.shader" />
