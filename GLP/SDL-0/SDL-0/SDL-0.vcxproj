@@ -82,6 +82,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
+    <ClCompile Include="CubeScene.cpp" />
     <ClCompile Include="Engine\Assets.cpp" />
     <ClCompile Include="Engine\MeshObject.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
@@ -130,6 +131,7 @@
   <ItemGroup>
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="CubeScene.h" />
     <ClInclude Include="Engine\Assets.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\MeshObject.h" />
@@ -156,6 +158,9 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Shaders\QuadTessellationControl.shader" />
+    <Content Include="Shaders\QuadTessellationEval.shader" />
+    <Content Include="Shaders\QuadTessellationVertex.shader" />
     <Content Include="Shaders\textureAnimVertex.shader" />
     <Content Include="Shaders\textureFragment.shader" />
     <Content Include="Shaders\textureVertex.shader" />
