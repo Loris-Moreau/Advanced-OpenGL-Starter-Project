@@ -21,6 +21,6 @@ public:
 	
 	virtual void SetupScene() = 0;
 	virtual void UpdateScene() = 0;
-	virtual void HandleInputs(SDL_Event& e){}
+	virtual void HandleInputs(){}
 };
 

@@ -27,7 +27,7 @@ void ScreensaverScene::VerticeInformationSlicer() {
 	std::copy(m_vertices.begin(), m_vertices.end(), verticeArray);
 
 	glBufferData(GL_ARRAY_BUFFER, m_vertices.size()*sizeof(float), verticeArray, GL_STATIC_DRAW);
-	//Now we split information's of the array : 2 float infos for the position / vertex
+	//Now we split informations of the array : 2 float infos for the position / vertex
 	// Position attribute												
 	glVertexAttribPointer(POSITION, POSITION_SIZE, GL_FLOAT, GL_FALSE, POSITION_SIZE * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(POSITION); //const POSITION = 0
