@@ -4,25 +4,22 @@
 
 class CubeScene : public Scene
 {
+private:
+    Texture2D texture;
+    Shader m_vertexShader, m_fragmentShader;
+    ShaderProgram m_Program;
+    Matrix4 projection, mv, rotation;
+    Vector3 position;
+    bool wireframe;
 protected:
     void LoadShaders() override;
     void CreateShaderPrograms() override;
     void VerticeInformationSlicer() override;
-    
 public:
     CubeScene();
     ~CubeScene() = default;
     void SetupScene() override;
     void UpdateScene() override;
-    
-private:
-    Texture2D texture;
-    Shader m_vertexShader, m_fragmentShader, m_fragmentShader2;
-    Shader m_tessControl, m_tessEval;
-    ShaderProgram m_Program;
-    ShaderProgram m_TessProgram;
-    Matrix4 projection, mv, rotation;
-    Vector3 position;
-    bool wireframe;
+protected:
     
 };

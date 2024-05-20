@@ -82,6 +82,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BaseScene.cpp" />
+    <ClCompile Include="BeachScene.cpp" />
+    <ClCompile Include="CubeScene.cpp" />
+    <ClCompile Include="CubeTessellationScene.cpp" />
     <ClCompile Include="Engine\Assets.cpp" />
     <ClCompile Include="Engine\MeshObject.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
@@ -101,12 +104,21 @@
     <ClCompile Include="TerrainTessellationScene.cpp" />
     <ClCompile Include="TessellationModesScene.cpp" />
     <ClCompile Include="TessellationScene.cpp" />
+    <ClCompile Include="TextureScene.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cubeTC.shader" />
+    <None Include="cubeTE.shader" />
     <None Include="Shaders\aminatedFragment.shader" />
     <None Include="Shaders\animatedRainbowFrag.shader" />
     <None Include="Shaders\animatedRainbowVertex.shader" />
+    <None Include="Shaders\beachControl.shader" />
+    <None Include="Shaders\beachEvaluation.shader" />
+    <None Include="Shaders\beachFragment.shader" />
+    <None Include="Shaders\beachVertex.shader" />
+    <None Include="Shaders\cube.frag" />
+    <None Include="Shaders\cube.vert" />
     <None Include="Shaders\rainbowFragment.shader" />
     <None Include="Shaders\rainbowVertex.shader" />
     <None Include="Shaders\simpleFragment.shader" />
@@ -115,20 +127,31 @@
     <None Include="Shaders\terrainTessEvaluation.shader" />
     <None Include="Shaders\terrainTessFragment.shader" />
     <None Include="Shaders\terrainTessVertex.shader" />
+    <None Include="Shaders\tessallationQuadGeometry.shader" />
     <None Include="Shaders\tessellationControl.shader" />
     <None Include="Shaders\tessellationEval.shader" />
     <None Include="Shaders\tessellationFragment.shader" />
     <None Include="Shaders\tessellationGeometry.shader" />
+    <None Include="Shaders\tessellationQuadControl.shader" />
+    <None Include="Shaders\tessellationQuadEval.shader" />
+    <None Include="Shaders\tessellationQuadVertex.shader" />
     <None Include="Shaders\tessellationVertex.shader" />
     <None Include="Shaders\tessModesControl.shader" />
     <None Include="Shaders\tessModesEvaluation.shader" />
     <None Include="Shaders\tessModesFragment.shader" />
     <None Include="Shaders\tessModesVertex.shader" />
     <None Include="Shaders\vertexMove.shader" />
+    <None Include="Shaders\waterControl.shader" />
+    <None Include="Shaders\waterEvaluation.shader" />
+    <None Include="Shaders\waterFragment.shader" />
+    <None Include="Shaders\waterVertex.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseScene.h" />
+    <ClInclude Include="BeachScene.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="CubeScene.h" />
+    <ClInclude Include="CubeTessellationScene.h" />
     <ClInclude Include="Engine\Assets.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\MeshObject.h" />
@@ -142,6 +165,7 @@
     <ClInclude Include="maths\Vector2.h" />
     <ClInclude Include="maths\Vector3.h" />
     <ClInclude Include="maths\Vector4.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManagement.h" />
     <ClInclude Include="Shader.h" />
@@ -151,7 +175,13 @@
     <ClInclude Include="TerrainTessellationScene.h" />
     <ClInclude Include="TessellationModesScene.h" />
     <ClInclude Include="TessellationScene.h" />
+    <ClInclude Include="TextureScene.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Shaders\textureAnimVertex.shader" />
+    <Content Include="Shaders\textureFragment.shader" />
+    <Content Include="Shaders\textureVertex.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

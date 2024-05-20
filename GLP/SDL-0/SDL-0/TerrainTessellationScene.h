@@ -7,9 +7,9 @@ class TerrainTessellationScene :public TessellationScene
 public:
     TerrainTessellationScene();
     ~TerrainTessellationScene(){}
-    void SetupScene();
-    void UpdateScene();
-    void HandleInputs() {}
+    void SetupScene() override;
+    void UpdateScene() override;
+    void HandleInputs(SDL_Event& e) override;
 
 private:
     void LoadShaders();

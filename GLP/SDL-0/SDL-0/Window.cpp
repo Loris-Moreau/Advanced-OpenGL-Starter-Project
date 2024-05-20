@@ -19,6 +19,7 @@ Window::Window(float width, float height, Color colorP)
 	Dimension = Vector2(width, height);
 	unsigned int center = SDL_WINDOWPOS_CENTERED;
 	m_window = SDL_CreateWindow("OpenGl Demo Scene", center, center, (int)Dimension.x, (int)Dimension.y, SDL_WINDOW_OPENGL);
+	SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 
 	//Create an OpenGL compatible context to let glew draw on it
 	m_context = SDL_GL_CreateContext(m_window);

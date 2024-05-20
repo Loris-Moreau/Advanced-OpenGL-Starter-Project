@@ -30,6 +30,7 @@ void TerrainTessellationScene::SetupScene() {
 
 	glEnable(GL_CULL_FACE);
 	//TEXTURES
+	glActiveTexture(GL_TEXTURE1);
 	Assets::loadTextureKtx("./Textures/terragen1.ktx", "terragen1");
 	texDisplacement = Assets::getTextureKtx("terragen1").id;
 	glBindTexture(GL_TEXTURE_2D, texDisplacement);
@@ -69,6 +70,20 @@ void TerrainTessellationScene::UpdateScene() {
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawArraysInstanced(GL_PATCHES, 0, 4, 64 * 64);
+}
+
+void TerrainTessellationScene::HandleInputs(SDL_Event& e)
+{
+	switch (e.type)
+	{
+	case SDL_KEYDOWN:
+		if(e.key.keysym.sym == SDLK_w)
+		{
+			//press W to switch with wireframe view
+			wireframe = !wireframe;
+		}
+        
+	}
 }
 
 

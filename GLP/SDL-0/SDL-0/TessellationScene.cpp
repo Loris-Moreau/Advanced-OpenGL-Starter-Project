@@ -10,12 +10,12 @@ TessellationScene::TessellationScene() {
 
 //Load the correct shaders from your files
 void TessellationScene::LoadShaders() {
-	m_vertexShader.LoadFrom("tessellationVertex.shader", VERTEX);
+	m_vertexShader.LoadFrom("tessellationQuadVertex.shader", VERTEX);
 	m_fragmentShader.LoadFrom("tessellationFragment.shader", FRAGMENT);
-	m_tessControlShader.LoadFrom("tessellationControl.shader", TESSELLATION_CONTROL);
-	m_tessEvalShader.LoadFrom("tessellationEval.shader", TESSELLATION_EVALUATION);
-	if(ENABLE_GEOMETRY_SHADER)m_geometryShader.LoadFrom("tessellationGeometry.shader", GEOMETRY);
-
+	m_tessControlShader.LoadFrom("tessellationQuadControl.shader", TESSELLATION_CONTROL);
+	m_tessEvalShader.LoadFrom("tessellationQuadEval.shader", TESSELLATION_EVALUATION);
+	if(ENABLE_GEOMETRY_SHADER)m_geometryShader.LoadFrom("tessellationQuadGeometry.shader", GEOMETRY);
+	glPatchParameteri(GL_PATCH_VERTICES, 4);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
@@ -54,8 +54,14 @@ void TessellationScene::SetupScene()
 void TessellationScene::UpdateScene()
 {
 	m_shaderProgram.Use();
+	float time = SDL_GetTicks() / 1000.0f;
+	float sin = sinf(time) / 2.0f + 0.5f;
+	m_shaderProgram.setFloat("outerRatio", sin*5);
+
+	time = SDL_GetTicks() / 1000.0f;
+	float cos = cosf(time) / 2.0f + 0.5f;
+	m_shaderProgram.setFloat("innerRatio", cos * 5);
 
 	glPointSize(5.0f);
-	glDrawArrays(GL_PATCHES, 0, 3);
-
+	glDrawArrays(GL_PATCHES, 0, 4);
 }

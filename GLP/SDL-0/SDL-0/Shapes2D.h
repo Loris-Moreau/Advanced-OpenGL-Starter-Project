@@ -19,18 +19,30 @@ protected:
 public:
 	static inline void CreateRectangle(vector<float>& vertices, Vector2 center, Vector2 dimensions) {
 		RatioCorrection(dimensions);
-		//B	
+
 		vertices.push_back(center.x - dimensions.x / 2);
-		vertices.push_back(center.y + dimensions.y / 2);		//	B-----------------C
-		//A														//  | 				/ |
-		vertices.push_back(center.x - dimensions.x / 2);		//  |		 /		  |
-		vertices.push_back(center.y - dimensions.y / 2);		//  | /				  |
-		//C														//  A-----------------D
+		vertices.push_back(center.y + dimensions.y / 2);
+		vertices.push_back(0);
+
+		vertices.push_back(center.x - dimensions.x / 2);
+		vertices.push_back(center.y - dimensions.y / 2);
+		vertices.push_back(0);
+
 		vertices.push_back(center.x + dimensions.x / 2);
-		vertices.push_back(center.y + dimensions.y / 2);		//We draw BAC then ACD (AC is the common side)
-		//D
+		vertices.push_back(center.y + dimensions.y / 2);
+		vertices.push_back(0);
+
+		vertices.push_back(center.x - dimensions.x / 2);
+		vertices.push_back(center.y - dimensions.y / 2);
+		vertices.push_back(0);
+
+		vertices.push_back(center.x + dimensions.x / 2);
+		vertices.push_back(center.y + dimensions.y / 2);
+		vertices.push_back(0);
+
 		vertices.push_back(center.x + dimensions.x / 2);
 		vertices.push_back(center.y - dimensions.y / 2);
+		vertices.push_back(0);
 	}
 
 
@@ -67,8 +79,8 @@ public:
 
 	static inline int DrawRectangle(int startIndex) {
 		//We will always be drawing 4 vertices
-		glDrawArrays(GL_TRIANGLE_STRIP, startIndex, 4);
-		return startIndex + 4;
+		glDrawArrays(GL_TRIANGLE_STRIP, startIndex, 6);
+		return startIndex + 6;
 	}
 	static inline int DrawEllipse(int startIndex, int vertexCount) {
 		//We use the GL_TRIANGLE_FAN to create triangle that have one point (the first) in common
